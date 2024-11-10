@@ -53,7 +53,7 @@
                         <el-input
                             type="textarea"
                             :rows="10"
-                            placeholder="请先登录后再输入代码"
+                            placeholder="输入代码"
                             v-model="code"
                             :disabled="!token">
                         </el-input>
