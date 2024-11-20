@@ -19,9 +19,12 @@
                         <el-menu-item index="/discussion">
                             <span>讨论</span>
                         </el-menu-item>
+                        <el-menu-item index="/submission">
+                            <span>提交记录</span>
+                        </el-menu-item>
                         <div v-if="token">
                             <el-link type="primary" @click="logout" style="float: right;">退出登录</el-link>
-                            <el-link type="primary" @click="jump('/user')" style="float: right; margin-right: 10px;">{{userInfo.username}}</el-link>
+                            <el-link type="primary" @click="jump('/user/profile')" style="float: right; margin-right: 10px;">{{userInfo.username}}</el-link>
                             <el-avatar v-if="userInfo.avatarUrl" :src="userInfo.avatarUrl" style="float: right; margin-right: 10px;" size="small" />
                         </div>
                         <div v-else>

@@ -83,14 +83,18 @@ export default {
         return {
             problem: {
                 id: '',
+                problemId: '',
                 title: '',
+                timeLimit: '',
+                memoryLimit: '',
                 description: '',
                 inputDescription: '',
                 outputDescription: '',
                 examples: [],
                 hint: '',
                 difficulty: '',
-                tagNames: []
+                createUser: '',
+                tags: []
             },
             language: 'cpp',
             code: '',

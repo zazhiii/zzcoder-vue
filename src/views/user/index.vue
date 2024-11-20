@@ -1,7 +1,20 @@
 <template>
     <div>
+        <el-card>
+            <el-menu router mode="horizontal">
+                <el-menu-item index="/user/profile">
+                    <span>个人信息</span>
+                </el-menu-item>
+                <el-menu-item index="/user/settings">
+                    <span>设置</span>
+                </el-menu-item>
+            </el-menu>
+            <div>
+                <router-view />
+            </div>
+        </el-card>
+        <!-- 
         <el-tabs type="border-card">
-            <!-- <router-view /> -->
             <el-tab-pane :label="userInfo.username">
                 <Profile />
             </el-tab-pane>
@@ -21,18 +34,18 @@
                     </el-tab-pane>
                 </el-tabs>
             </el-tab-pane>
-        </el-tabs>
+        </el-tabs> -->
     </div>
 
 </template>
 
 <script>
 import { getToken } from '@/utils/auth';
-import GeneralSetting from './components/GeneralSetting.vue';
-import UpdateAvatar from './components/UpdateAvater.vue';
-import UpdatePassword from './components/UpdatePassword.vue';
-import UpdateEmail from './components/UpdateEmail.vue';
-import Profile from './components/Profile.vue';
+// import GeneralSetting from './components/GeneralSetting.vue';
+// import UpdateAvatar from './components/UpdateAvater.vue';
+// import UpdatePassword from './components/UpdatePassword.vue';
+// import UpdateEmail from './components/UpdateEmail.vue';
+// import Profile from './components/Profile.vue';
 
 export default {
     name: 'UserProfilePage',
@@ -43,11 +56,11 @@ export default {
         }
     },
     components: {
-        GeneralSetting,
-        UpdateAvatar,
-        UpdatePassword,
-        UpdateEmail,
-        Profile
+        // GeneralSetting,
+        // UpdateAvatar,
+        // UpdatePassword,
+        // UpdateEmail,
+        // Profile
     },
     data() {
         return {
@@ -55,7 +68,7 @@ export default {
         };
     },
     methods: {
-        
+
     }
 }
 </script>
