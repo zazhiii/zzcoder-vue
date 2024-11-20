@@ -93,3 +93,11 @@ export function deleteTag(id) {
     })
 }
 
+// 获取提交记录
+export function getSubmissions(submissionQueryDTO) {
+    return request({
+        url: '/judge/submission',
+        method: 'post',
+        data: submissionQueryDTO
+    })
+}

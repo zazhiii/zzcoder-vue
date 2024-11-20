@@ -48,6 +48,10 @@ const routes = [
             component: () => import('@/views/user/profileView.vue')
           },
           {
+            path: 'submissions',
+            component: () => import('@/views/user/submissionsView.vue')
+          },
+          {
             path: 'settings',
             component: () => import('@/views/user/settingView.vue')
           }
