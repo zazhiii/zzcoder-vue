@@ -18,10 +18,10 @@
 </template>
 
 <script>
-import GeneralSetting from './components/GeneralSetting.vue';
-import UpdateAvatar from './components/UpdateAvater.vue';
-import UpdatePassword from './components/UpdatePassword.vue';
-import UpdateEmail from './components/UpdateEmail.vue';
+import GeneralSetting from './settings/GeneralSetting.vue';
+import UpdateAvatar from './settings/UpdateAvater.vue';
+import UpdatePassword from './settings/UpdatePassword.vue';
+import UpdateEmail from './settings/UpdateEmail.vue';
 
 
 export default {

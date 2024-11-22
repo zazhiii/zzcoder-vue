@@ -41,21 +41,6 @@ const routes = [
       {
         path: 'user',
         component: () => import('@/views/user/index.vue'),
-        redirect: '/user/profile',
-        children: [
-          {
-            path: 'profile',
-            component: () => import('@/views/user/profileView.vue')
-          },
-          {
-            path: 'submissions',
-            component: () => import('@/views/user/submissionsView.vue')
-          },
-          {
-            path: 'settings',
-            component: () => import('@/views/user/settingView.vue')
-          }
-        ]
       },
       {
         path: 'problem',
@@ -80,18 +65,6 @@ const routes = [
           }
         ]
       },
-      {
-        path: 'submission',
-        component: () => import('@/views/submission/index.vue'),
-      }
-      // {
-      //   path: '/add-problem',
-      //   component: () => import('@/views/problem/addProblemView.vue')
-      // },
-      // {
-      //   path: 'contest',
-      //   component: () => import('@/views/problem/ProblemListView.vue')
-      // }
     ]
   },
 ]

@@ -40,7 +40,7 @@
 
 <script>
 export default {
-    name: 'UserProfile',
+    name: 'UserProfileComponent',
     computed: {
         userInfo() {
             return this.$store.state.userInfo;

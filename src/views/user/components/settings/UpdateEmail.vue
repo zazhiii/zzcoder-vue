@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import SendEmailCode from '../../login/components/SendEmailCode.vue'
+import SendEmailCode from '@/views/login/components/SendEmailCode.vue'
 import { updateEmail } from '@/api/user'
 
 export default {

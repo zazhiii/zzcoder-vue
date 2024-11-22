@@ -1,7 +1,7 @@
 <template>
     <div>
         <h1>基本设置</h1>
-        <el-form :model="form" label-width="80px">
+        <el-form :model="form" label-width="150px">
             <el-form-item label="codeforces用户名">
                 <el-input v-model="form.cfUsername"></el-input>
             </el-form-item>

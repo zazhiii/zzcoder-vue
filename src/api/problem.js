@@ -101,3 +101,11 @@ export function getSubmissions(submissionQueryDTO) {
         data: submissionQueryDTO
     })
 }
+
+// 获取提交记录详情
+export function getSubmissionInfo(submitId) {
+    return request({
+        url: `/judge/submission/${submitId}`,
+        method: 'get'
+    })
+}
