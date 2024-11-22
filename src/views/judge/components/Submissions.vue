@@ -93,6 +93,11 @@
                 </el-form>
             </el-aside>
         </el-container>
+
+        <!-- 提交详情对话框 -->
+        <el-dialog title="提交详情" :visible.sync="dialogVisible" width="80%">
+            <SubmissionInfo :submissionId="submissionId" />
+        </el-dialog>
     </div>
 </template>
 
@@ -106,6 +111,9 @@ export default {
             type: Object,
             required: true
         },
+    },
+    components: {
+        SubmissionInfo: () => import('./SubmissionInfo')
     },
     data() {
         return {
