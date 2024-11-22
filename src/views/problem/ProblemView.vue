@@ -8,8 +8,16 @@
             </div>
             <!-- 题目信息 -->
             <div class="problem-info">
-                <el-tag v-for="tag in problem.tagNames" :key="tag" style="margin-right: 10px;">{{ tag }}</el-tag>
+                <el-tag v-for="tag in problem.tags" :key="tag.id" style="margin-right: 10px;">{{ tag.name }}</el-tag>
                 <DifficultyTag :difficulty="problem.difficulty" />
+                <div class="problem-limits">
+                    <el-tag type="info">时间限制: {{ problem.timeLimit / 1000 }}s</el-tag>
+                    <el-tag type="info">内存限制: {{ problem.memoryLimit }}MB</el-tag>
+                    <!-- <el-tag type="info">栈限制: {{ problem.stackLimit }}MB</el-tag> -->
+                </div>
+                <div class="problem-source" v-if="problem.source">
+                    <span>来源: {{ problem.source }}</span>
+                </div>
             </div>
             <!-- 题目内容 -->
             <div class="problem-content">
@@ -22,12 +30,11 @@
                 <h3>输出格式</h3>
                 <div v-html="problem.outputDescription"></div>
 
-                <!-- TODO: 样例格式化 -->
                 <h3>样例</h3>
                 <div v-for="(example, index) in problem.examples" :key="index">
                     <h4>样例 {{ index + 1 }}</h4>
                     <pre>输入: {{ example.input }}</pre>
-                    <pre>输出: {{ example.output }}</pre>
+                    <pre>输出: {{ example.expectedOutput }}</pre>
                 </div>
 
                 <h3>提示</h3>
@@ -87,6 +94,7 @@ export default {
                 title: '',
                 timeLimit: '',
                 memoryLimit: '',
+                stackLimit: '',
                 description: '',
                 inputDescription: '',
                 outputDescription: '',
@@ -94,6 +102,7 @@ export default {
                 hint: '',
                 difficulty: '',
                 createUser: '',
+                source: '',
                 tags: []
             },
             language: 'cpp',
@@ -123,11 +132,23 @@ export default {
 <style scoped>
 .problem-detail {
     margin-bottom: 20px;
-    /* padding: 100px; */
 }
 
 .problem-info {
     margin: 20px 0;
+}
+
+.problem-limits {
+    margin: 10px 0;
+}
+
+.problem-limits .el-tag {
+    margin-right: 10px;
+}
+
+.problem-source {
+    margin: 10px 0;
+    color: #666;
 }
 
 .problem-content {
