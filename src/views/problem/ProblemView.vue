@@ -3,7 +3,7 @@
         <el-card class="problem-detail">
             <div slot="header">
                 <span>{{ problem.title }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="jump(`/problem/edit/${problem.id}`)" 
+                <el-button style="float: right; padding: 3px 0" type="text" @click="jump(`/problem/edit/${problem.id}`)"
                     v-if="userInfo.roles.includes('admin')">编辑题目</el-button>
             </div>
             <!-- 题目信息 -->
@@ -50,20 +50,18 @@
                 <el-form>
                     <el-form-item label="代码语言">
                         <el-select v-model="language" placeholder="请选择语言" :disabled="!token">
-                            <el-option label="C++" value="cpp"></el-option>
+                            <!-- <el-option label="C++" value="cpp"></el-option> -->
                             <el-option label="Java" value="java"></el-option>
-                            <el-option label="Python" value="python"></el-option>
+                            <!-- <el-option label="Python" value="python"></el-option> -->
                         </el-select>
                         <div v-if="!token" style="color: #F56C6C; font-size: 12px;">请先登录后再选择语言</div>
+                        <!-- <button @click="changeTheme">Toggle Theme</button> -->
                     </el-form-item>
+
                     <el-form-item label="代码">
-                        <el-input
-                            type="textarea"
-                            :rows="10"
-                            placeholder="输入代码"
-                            v-model="code"
-                            :disabled="!token">
-                        </el-input>
+                        <el-input type="textarea" v-model="code" :rows="10" :autosize="{ minRows: 10 }"
+                            :disabled="!token" />
+                        <!-- <codeEditor v-model="code" :language="language" /> -->
                         <div v-if="!token" style="color: #F56C6C; font-size: 12px;">请先登录后再编写代码</div>
                     </el-form-item>
                 </el-form>
@@ -75,11 +73,15 @@
 <script>
 import { getToken } from '@/utils/auth'
 import { getProblemInfo } from '@/api/problem'
+import { submitCode } from '@/api/judge'
 import DifficultyTag from './components/difficultyTag.vue'
+// import codeEditor from './components/codeEditor.vue'
+
 export default {
     name: 'ProblemView',
     components: {
-        DifficultyTag
+        DifficultyTag,
+        // codeEditor
     },
     computed: {
         userInfo() {
@@ -107,7 +109,11 @@ export default {
             },
             language: 'cpp',
             code: '',
-            token: getToken()
+            token: getToken(),
+            theme: "vs-dark",
+            editorOptions: {
+                fontSize: 16,
+            },
         }
     },
     async mounted() {
@@ -119,7 +125,20 @@ export default {
             const { data } = await getProblemInfo(id);
             this.problem = data;
         },
-        submitProblem() {
+        async submitProblem() {
+            try {
+                await submitCode({
+                    userId: this.userInfo.id,
+                    problemId: this.problem.id,
+                    code: this.code,
+                    language: this.language
+                })
+                this.$message.success('提交成功')
+                this.$router.push('/problem/judge-result/' + this.problem.id)
+            } catch (error) {
+                this.$message.error('提交失败，请稍后再试')
+                console.log(error)
+            }
             // TODO: 实现提交代码功能
         },
         jump(url) {

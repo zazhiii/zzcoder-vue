@@ -124,6 +124,7 @@ export default {
             localQuery: {
                 currentPage: this.submissionQuery.currentPage || 1,
                 limit: this.submissionQuery.limit || 10,
+                problemId: this.submissionQuery.problemId || '',
                 username: this.submissionQuery.username || '',
                 result: this.submissionQuery.result || '',
                 language: this.submissionQuery.language || '',

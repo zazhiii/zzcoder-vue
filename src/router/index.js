@@ -62,9 +62,17 @@ const routes = [
           {
             path: 'edit/:id',
             component: () => import('@/views/problem/editProblemView.vue')
+          },
+          {
+            path: 'judge-result/:problemId',
+            component: () => import('@/views/problem/judgeResultView.vue')
           }
         ]
       },
+      {
+        path: 'submissions',
+        component: () => import('@/views/judge/submissionsView.vue'),
+      }
     ]
   },
 ]
