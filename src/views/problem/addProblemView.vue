@@ -35,16 +35,6 @@
                     </el-select>
                 </el-form-item>
 
-                <el-form-item label="题目标签">
-                    <el-select v-model="problemForm.tagIds" multiple placeholder="请选择标签">
-                        <el-option v-for="tag in tags" 
-                            :key="tag.id" 
-                            :label="tag.name" 
-                            :value="tag.id">
-                        </el-option>
-                    </el-select>
-                </el-form-item>
-
                 <el-form-item label="题目描述">
                     <el-input type="textarea" v-model="problemForm.description" :rows="5"></el-input>
                 </el-form-item>
@@ -57,15 +47,6 @@
                     <el-input type="textarea" v-model="problemForm.outputDescription" :rows="3"></el-input>
                 </el-form-item>
 
-                <el-form-item label="样例">
-                    <div v-for="(example, index) in problemForm.examples" :key="index" class="example-item">
-                        <el-input placeholder="输入" v-model="example.input" type="textarea" :rows="2"></el-input>
-                        <el-input placeholder="输出" v-model="example.output" type="textarea" :rows="2"></el-input>
-                        <el-button type="danger" @click="removeExample(index)" size="small">删除样例</el-button>
-                    </div>
-                    <el-button type="primary" @click="addExample" size="small">添加样例</el-button>
-                </el-form-item>
-
                 <el-form-item label="题目来源">
                     <el-input v-model="problemForm.source"></el-input>
                 </el-form-item>
@@ -76,9 +57,9 @@
 
                 <el-form-item label="权限">
                     <el-select v-model="problemForm.status" placeholder="请选择权限">
-                        <el-option label="公开" value="0"></el-option>
-                        <el-option label="私有" value="1"></el-option>
-                        <el-option label="比赛中" value="3"></el-option>
+                        <el-option label="公开" :value="0"></el-option>
+                        <el-option label="私有" :value="1"></el-option>
+                        <el-option label="比赛中" :value="3"></el-option>
                     </el-select>
                 </el-form-item>
 
@@ -92,7 +73,6 @@
 </template>
 
 <script>
-import { getTagList } from '@/api/problem'
 import { addProblem } from '@/api/problem'
 
 export default {
@@ -100,25 +80,19 @@ export default {
     data() {
         return {
             problemForm: {
-                problemId: '',
-                title: '',
+                problemId: 'p1002',
+                title: '添加接口测试',
                 timeLimit: 1000,
                 memoryLimit: 256,
                 stackLimit: 128,
-                difficulty: '',
-                tagIds: [],
-                description: '',
-                inputDescription: '',
-                outputDescription: '',
-                examples: [{
-                    input: '',
-                    output: ''
-                }],
-                source: 'zzcoder',
-                hint: '',
-                status: '0'
+                difficulty: 0,
+                description: '测试',
+                inputDescription: '测试',
+                outputDescription: '测试',
+                source: '测试',
+                hint: '测试',
+                status: 0
             },
-            tags: [],
             difficultyOptions: [{
                 value: 0,
                 label: '入门'
@@ -143,48 +117,30 @@ export default {
             }]
         }
     },
-    async mounted() {
-        await this.fetchTags()
-    },
     methods: {
-        async fetchTags() {
-            const { data } = await getTagList()
-            this.tags = data
-        },
-        addExample() {
-            this.problemForm.examples.push({
-                input: '',
-                output: ''
-            })
-        },
-        removeExample(index) {
-            this.problemForm.examples.splice(index, 1)
-        },
         async submitForm() {
-            this.problemForm.examples = JSON.stringify(this.problemForm.examples)
-            await addProblem(this.problemForm)
-            this.$router.replace('/problem')
-            this.$message.success('添加成功')
+            try {
+                await addProblem(this.problemForm)
+                this.$message.success('添加成功')
+                this.$router.replace('/problem')
+            } catch (error) {
+                this.$message.error('添加失败')
+            }
         },
         resetForm() {
             this.problemForm = {
-                problemId: '',
-                title: '',
+                problemId: 'p1002',
+                title: '添加接口测试',
                 timeLimit: 1000,
                 memoryLimit: 256,
                 stackLimit: 128,
-                difficulty: '',
-                tagIds: [],
-                description: '',
-                inputDescription: '',
-                outputDescription: '',
-                examples: [{
-                    input: '',
-                    output: ''
-                }],
-                source: 'zzcoder',
-                hint: '',
-                status: '0'
+                difficulty: 0,
+                description: '测试',
+                inputDescription: '测试',
+                outputDescription: '测试',
+                source: '测试',
+                hint: '测试',
+                status: 0
             }
         }
     }
@@ -194,14 +150,5 @@ export default {
 <style scoped>
 .problem-form {
     margin: 20px;
-}
-.example-item {
-    margin-bottom: 20px;
-    padding: 10px;
-    border: 1px solid #DCDFE6;
-    border-radius: 4px;
-}
-.example-item .el-input {
-    margin-bottom: 10px;
 }
 </style>
