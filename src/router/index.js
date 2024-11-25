@@ -53,7 +53,7 @@ const routes = [
           },
           {
             path: 'add',
-            component: () => import('@/views/problem/addProblemView.vue')
+            component: () => import('@/views/problem/admin/addProblemView.vue')
           },
           {
             path: ':id',
@@ -61,11 +61,15 @@ const routes = [
           },
           {
             path: 'edit/:id',
-            component: () => import('@/views/problem/editProblemView.vue')
+            component: () => import('@/views/problem/admin/editProblemView.vue')
           },
           {
             path: 'judge-result/:problemId',
             component: () => import('@/views/problem/judgeResultView.vue')
+          },
+          {
+            path: 'addTag/:problemId',
+            component: () => import('@/views/problem/admin/addTagView.vue')
           }
         ]
       },

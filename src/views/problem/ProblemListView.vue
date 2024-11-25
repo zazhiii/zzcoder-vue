@@ -78,7 +78,7 @@
 
 <script>
 import { getProblemList } from '@/api/problem'
-import { getTagList } from '@/api/problem'
+import { getAllTags } from '@/api/problem'
 import DifficultyTag from './components/difficultyTag.vue'
 
 export default {
@@ -145,7 +145,7 @@ export default {
         },
         async fetchTags() {
             try {
-                const { data } = await getTagList();
+                const { data } = await getAllTags();
                 this.tags = data;
             } catch (error) {
                 console.error(error);

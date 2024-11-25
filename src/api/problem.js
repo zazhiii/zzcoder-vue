@@ -45,19 +45,19 @@ export function getProblemInfo(id) {
 }
 
 // 为题目添加标签
-export function addTagToProblem(problemId, tagIds) {
+export function addTagToProblem(problemId, tagId) {
     return request({
         url: '/problem/add-tag-to-problem',
         method: 'post',
         params: {
             problemId,
-            tagIds
+            tagId
         }
     })
 }
 
 // 删除题目标签
-export function deleteTagFromProblem(problemId, tagId) {
+export function removeTagFromProblem(problemId, tagId) {
     return request({
         url: '/problem/delete-tag-from-problem',
         method: 'delete',
@@ -69,7 +69,7 @@ export function deleteTagFromProblem(problemId, tagId) {
 }
 
 // 获取标签列表
-export function getTagList() {
+export function getAllTags() {
     return request({
         url: '/tag',
         method: 'get'

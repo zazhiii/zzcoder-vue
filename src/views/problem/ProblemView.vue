@@ -3,7 +3,11 @@
         <el-card class="problem-detail">
             <div slot="header">
                 <span>{{ problem.title }}</span>
-                <el-button style="float: right; padding: 3px 0" type="text" @click="jump(`/problem/edit/${problem.id}`)"
+                <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/addTag/${problem.id}`)"
+                    v-if="userInfo.roles.includes('admin')">修改标签</el-button>
+                    <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/edit/${problem.id}`)"
+                    v-if="userInfo.roles.includes('admin')">测试数据</el-button>
+                <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/edit/${problem.id}`)"
                     v-if="userInfo.roles.includes('admin')">编辑题目</el-button>
             </div>
             <!-- 题目信息 -->
@@ -75,13 +79,11 @@ import { getToken } from '@/utils/auth'
 import { getProblemInfo } from '@/api/problem'
 import { submitCode } from '@/api/judge'
 import DifficultyTag from './components/difficultyTag.vue'
-// import codeEditor from './components/codeEditor.vue'
 
 export default {
     name: 'ProblemView',
     components: {
         DifficultyTag,
-        // codeEditor
     },
     computed: {
         userInfo() {
