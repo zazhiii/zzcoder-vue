@@ -110,4 +110,31 @@ export function getSubmissionInfo(submitId) {
     })
 }
 
+// 获取题目测试用例
+export function getTestCases(problemId) {
+    return request({
+        url: '/problem/test-cases',
+        method: 'get',
+        params: { problemId }
+    })
+}
+
+// 为题目添加测试用例
+export function addTestCase(testCase) {
+    return request({
+        url: '/problem/add-test-case',
+        method: 'post',
+        data: testCase
+    })
+}
+
+// 删除题目的测试用例
+export function deleteTestCase(id) {
+    return request({
+        url: '/problem/delete-test-case',
+        method: 'delete',
+        params: { id }
+    })
+}
+
 

@@ -70,6 +70,10 @@ const routes = [
           {
             path: 'addTag/:problemId',
             component: () => import('@/views/problem/admin/addTagView.vue')
+          },
+          {
+            path: 'editTestCase/:problemId',
+            component: () => import('@/views/problem/admin/editTestCaseView.vue')
           }
         ]
       },

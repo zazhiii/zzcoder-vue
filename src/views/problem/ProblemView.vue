@@ -5,7 +5,7 @@
                 <span>{{ problem.title }}</span>
                 <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/addTag/${problem.id}`)"
                     v-if="userInfo.roles.includes('admin')">修改标签</el-button>
-                    <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/edit/${problem.id}`)"
+                    <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/editTestCase/${problem.id}`)"
                     v-if="userInfo.roles.includes('admin')">测试数据</el-button>
                 <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/edit/${problem.id}`)"
                     v-if="userInfo.roles.includes('admin')">编辑题目</el-button>
