@@ -43,7 +43,7 @@
 
             </div>
             <!-- 题目列表 -->
-            <el-table :data="problems" style="width: 100%">
+            <!-- <el-table :data="problems" style="width: 100%">
                 <el-table-column prop="problemId" label="题号" width="80"></el-table-column>
                 <el-table-column prop="title" label="标题">
                     <template slot-scope="scope">
@@ -62,7 +62,8 @@
                     </template>
                 </el-table-column>
                 <el-table-column prop="acceptance" label="通过率" width="100"></el-table-column>
-            </el-table>
+            </el-table> -->
+            <problemList :problems="problems" :showTags="showTags"></problemList>
 
             <!-- 分页 -->
             <div class="pagination">
@@ -79,12 +80,14 @@
 <script>
 import { getProblemList } from '@/api/problem'
 import { getAllTags } from '@/api/problem'
-import DifficultyTag from './components/difficultyTag.vue'
+// import DifficultyTag from './components/difficultyTag.vue'
+import problemList from './components/problemList.vue';
 
 export default {
     name: 'ProblemListView',
     components: {
-        DifficultyTag,
+        // DifficultyTag,
+        problemList
     },
     computed: {
         userInfo() {
