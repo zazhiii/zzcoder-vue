@@ -4,7 +4,7 @@
         <el-container>
             <el-main>
                 <el-table :data="submissions" style="width: 100%">
-                    <!-- 提交id TODO 提交记录详细 -->
+                    <!-- 提交id -->
                     <el-table-column prop="id" label="ID" width="80">
                         <template #default="scope">
                             <el-link @click="submissionId = scope.row.id; dialogVisible = true">
@@ -18,7 +18,7 @@
                             {{ new Date(scope.row.submitTime).toLocaleString('zh-CN') }}
                         </template>
                     </el-table-column>
-                    <!-- 用户名 TODO 用户主页跳转 -->
+                    <!-- 用户名 -->
                     <el-table-column prop="username" label="用户名" width="100">
                         <template #default="scope">
                             <el-link @click="$router.push(`/user/${scope.row.userId}`)">

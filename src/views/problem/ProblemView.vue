@@ -3,6 +3,7 @@
         <el-card class="problem-detail">
             <div slot="header">
                 <span>{{ problem.title }}</span>
+                <!-- TODO: 细分权限管理 -->
                 <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/addTag/${problem.id}`)"
                     v-if="userInfo.roles.includes('admin')">修改标签</el-button>
                     <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/editTestCase/${problem.id}`)"
@@ -141,7 +142,6 @@ export default {
                 this.$message.error('提交失败，请稍后再试')
                 console.log(error)
             }
-            // TODO: 实现提交代码功能
         },
         jump(url) {
             this.$router.replace(url);

@@ -80,6 +80,14 @@ const routes = [
       {
         path: 'submissions',
         component: () => import('@/views/judge/submissionsView.vue'),
+      },
+      {
+        path: 'problem-set',
+        component: () => import('@/views/problem-set/index.vue'),
+      },
+      {
+        path: 'problem-set/:id',
+        component: () => import('@/views/problem-set/problemSetInfoView.vue'),
       }
     ]
   },
