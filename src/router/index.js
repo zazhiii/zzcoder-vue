@@ -88,6 +88,14 @@ const routes = [
       {
         path: 'problem-set/:id',
         component: () => import('@/views/problem-set/problemSetInfoView.vue'),
+      },
+      {
+        path: 'contest',
+        component: () => import('@/views/contest/index.vue'),
+      },
+      {
+        path: 'contest/:id',
+        component: () => import('@/views/contest/contestInfoView.vue'),
       }
     ]
   },

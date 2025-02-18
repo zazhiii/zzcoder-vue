@@ -8,7 +8,7 @@
                 <el-tab-pane label="提交记录">
                     <Submissions :submissionQuery="{
                         username: username,
-                    }"/>
+                    }" />
                 </el-tab-pane>
                 <el-tab-pane label="设置">
                     <Settings />

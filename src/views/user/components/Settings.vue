@@ -1,19 +1,19 @@
 <template>
     <el-card>
         <el-tabs type="card">
-        <el-tab-pane label="基本设置">
-            <GeneralSetting />
-        </el-tab-pane>
-        <el-tab-pane label="修改头像">
-            <UpdateAvatar />
-        </el-tab-pane>
-        <el-tab-pane label="修改密码">
-            <UpdatePassword />
-        </el-tab-pane>
-        <el-tab-pane label="修改邮箱地址">
-            <UpdateEmail />
-        </el-tab-pane>
-    </el-tabs>
+            <el-tab-pane label="基本设置">
+                <GeneralSetting />
+            </el-tab-pane>
+            <el-tab-pane label="修改头像">
+                <UpdateAvatar />
+            </el-tab-pane>
+            <el-tab-pane label="修改密码">
+                <UpdatePassword />
+            </el-tab-pane>
+            <el-tab-pane label="修改邮箱地址">
+                <UpdateEmail />
+            </el-tab-pane>
+        </el-tabs>
     </el-card>
 </template>
 
