@@ -49,11 +49,13 @@ import { Message } from 'element-ui';
 export default {
     mounted() {
         this.fetchContestInfo()
+        this.initWebSocket()
     },
     data() {
         return {
             contest: {},
-            contestProblems: []
+            contestProblems: [],
+            socket: null
         };
     },
     methods: {
@@ -80,14 +82,34 @@ export default {
         },
         jump(path) {
             this.$router.push(path)
-        }
-    }
+        },
+        initWebSocket() {
+            this.socket = new WebSocket(`ws://localhost:8080/contest/${this.$route.params.id}`)
+            this.socket.onopen = () => {
+                console.log('WebSocket连接成功')
+            }
+            this.socket.onmessage = (event) => {
+                Message.info(event.data)
+            }
+            this.socket.onclose = () => {
+                console.log('WebSocket连接关闭')
+            }
+            this.socket.onerror = (error) => {
+                console.error('WebSocket连接错误', error)
+            }
+        },
+    },
+    // 在组件销毁时关闭 WebSocket 连接
+    // beforeDestroy() {
+    //     if (this.socket) {
+    //         this.socket.close()
+    //     }
+    // }
 };
 </script>
 
 <style scoped>
 .contest-info {
-    /* padding: 20px; */
     background-color: #f9f9f9;
     border-radius: 5px;
 }

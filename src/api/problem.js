@@ -21,7 +21,7 @@ export function getProblemList(data) {
 // 修改题目
 export function updateProblem(data) {
     return request({
-        url: '/problem',
+        url: 'admin/problem',
         method: 'put',
         data
     })
@@ -122,7 +122,7 @@ export function getTestCases(problemId) {
 // 为题目添加测试用例
 export function addTestCase(testCase) {
     return request({
-        url: '/problem/add-test-case',
+        url: '/admin/problem/add-test-case',
         method: 'post',
         data: testCase
     })

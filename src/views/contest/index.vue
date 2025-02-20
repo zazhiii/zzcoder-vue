@@ -12,6 +12,11 @@
                 </el-table-column>
                 <!-- TODO：倒计时 -->
                 <el-table-column prop="startTime" label="开始时间" width="200"></el-table-column>
+                <el-table-column prop="status" label="状态" width="200">
+                    <template slot-scope="scope">
+                            {{ scope.row.status === 0 ? '未开始' : (scope.row.status === 1 ? '比赛中' : '已结束') }}
+                    </template>
+                </el-table-column>
             </el-table>
         </el-card>
     </div>

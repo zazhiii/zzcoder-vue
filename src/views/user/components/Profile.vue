@@ -5,8 +5,6 @@
                 <el-avatar :size="100" :src="userInfo.avatarUrl"></el-avatar>
                 <div class="info-text">
                     <h2>{{ userInfo.username }}</h2>
-                    <p>角色: {{ userInfo.roles.join(',') }}</p>
-                    <p>权限: {{ userInfo.permissions.join(',') }}</p>
                 </div>
             </div>
             
@@ -50,7 +48,6 @@ export default {
         return {
             username: this.$store.state.username,
             avatarUrl: this.$store.state.avatarUrl,
-            role: this.$store.state.role
         }
     }
 }

@@ -10,24 +10,18 @@ export default new Vuex.Store({
         userInfo: {
             username: '',
             avatarUrl: '',
-            roles: [],
-            permissions: []
         }
     },
     getters: {
     },
     mutations: {
-        setUserInfo(state, { username, avatarUrl, roles, permissions }) {
+        setUserInfo(state, { username, avatarUrl}) {
             state.userInfo.username = username;
             state.userInfo.avatarUrl = avatarUrl;
-            state.userInfo.roles = roles;
-            state.userInfo.permissions = permissions;
         },
         clearUserInfo(state) {
             state.userInfo.username = '';
             state.userInfo.avatarUrl = '';
-            state.userInfo.roles = [];
-            state.userInfo.permissions = [];
         }
     },
     actions: {

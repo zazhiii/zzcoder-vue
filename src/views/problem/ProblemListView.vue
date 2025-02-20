@@ -4,7 +4,7 @@
             <div slot="header">
                 <span>题目列表</span>
                 <el-button style="float: right; padding: 3px 0" type="text" @click="jump('/problem/add')"
-                    v-if="userInfo.roles.includes('admin')">添加题目</el-button>
+                    >添加题目</el-button>
 
                 <!-- 题目标签选择框 -->
                 <el-button type="text" @click="drawer = true; fetchTags()" style="margin-left: 20px;">选择标签</el-button>

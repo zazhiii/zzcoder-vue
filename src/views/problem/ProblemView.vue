@@ -5,11 +5,11 @@
                 <span>{{ problem.title }}</span>
                 <!-- TODO: 细分权限管理 -->
                 <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/addTag/${problem.id}`)"
-                    v-if="userInfo.roles.includes('admin')">修改标签</el-button>
+                    >修改标签</el-button>
                     <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/editTestCase/${problem.id}`)"
-                    v-if="userInfo.roles.includes('admin')">测试数据</el-button>
+                    >测试数据</el-button>
                 <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/edit/${problem.id}`)"
-                    v-if="userInfo.roles.includes('admin')">编辑题目</el-button>
+                    >编辑题目</el-button>
             </div>
             <!-- 题目信息 -->
             <div class="problem-info">
@@ -110,7 +110,7 @@ export default {
                 source: '',
                 tags: []
             },
-            language: 'cpp',
+            language: 'Java',
             code: '',
             token: getToken(),
             theme: "vs-dark",
