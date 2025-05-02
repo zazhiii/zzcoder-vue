@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { setToken } from '@/utils/auth'
+import { setToken } from '@/utils/cookie'
 import { loginByEmailcode } from '@/api/auth'
 import SendEmailCode from './components/SendEmailCode.vue'
 

@@ -20,7 +20,7 @@
 
 <script>
 import { updatePassword } from '@/api/auth';
-import { removeToken } from '@/utils/auth';
+import { removeToken } from '@/utils/cookie';
 
 export default {
     name: 'UpdatePassword',

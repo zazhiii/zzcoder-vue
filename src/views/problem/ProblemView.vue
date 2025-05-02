@@ -4,12 +4,13 @@
             <div slot="header">
                 <span>{{ problem.title }}</span>
                 <!-- TODO: 细分权限管理 -->
-                <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/addTag/${problem.id}`)"
-                    >修改标签</el-button>
-                    <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/editTestCase/${problem.id}`)"
-                    >测试数据</el-button>
-                <el-button style="float: right; padding: 3px 0; margin: 0 3px;" type="text" @click="jump(`/problem/edit/${problem.id}`)"
-                    >编辑题目</el-button>
+                <el-button v-if="hasPermission(permissions.PROBLEM_TAG_ADD)" class="problem-action-btn" type="text"
+                    @click="jump(`/problem/addTag/${problem.id}`)">修改标签</el-button>
+                <el-button v-if="hasPermission(permissions.PROBLEM_ADD_TEST_CASE) && hasPermission(permissions.PROBLEM_DELETE_TEST_CASE)" class="problem-action-btn" type="text"
+                    @click="jump(`/problem/editTestCase/${problem.id}`)">测试数据</el-button>
+                <el-button v-if="hasPermission(permissions.PROBLEM_UPDATE)" class="problem-action-btn" type="text"
+                    @click="jump(`/problem/edit/${problem.id}`)">编辑题目</el-button>
+
             </div>
             <!-- 题目信息 -->
             <div class="problem-info">
@@ -76,10 +77,11 @@
 </template>
 
 <script>
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/utils/cookie'
 import { getProblemInfo } from '@/api/problem'
 import { submitCode } from '@/api/judge'
 import DifficultyTag from './components/difficultyTag.vue'
+import { Permissions } from '@/config/permissions'
 
 export default {
     name: 'ProblemView',
@@ -117,6 +119,7 @@ export default {
             editorOptions: {
                 fontSize: 16,
             },
+            permissions: Permissions
         }
     },
     async mounted() {
@@ -145,12 +148,20 @@ export default {
         },
         jump(url) {
             this.$router.replace(url);
+        },
+        hasPermission(permission) {
+            return this.userInfo.permissions.includes(permission);
         }
     }
 }
 </script>
 
 <style scoped>
+.problem-action-btn {
+    margin: 0 10px 0 10px;
+    float: right;
+}
+
 .problem-detail {
     margin-bottom: 20px;
 }

@@ -29,3 +29,4 @@ export const updatePassword = ({oldPassword, newPassword}) => {
 export const updatePasswordByEmail = ({email, emailVerificationCode, newPassword}) => {
     return axios.post('/update-password-by-email', { email, emailVerificationCode, newPassword })
 }
+

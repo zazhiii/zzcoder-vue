@@ -47,8 +47,8 @@ export function getProblemInfo(id) {
 // 为题目添加标签
 export function addTagToProblem(problemId, tagId) {
     return request({
-        url: '/problem/add-tag-to-problem',
-        method: 'post',
+        url: '/admin/problem/add-tag-to-problem',
+        method: 'put',
         params: {
             problemId,
             tagId
@@ -59,7 +59,7 @@ export function addTagToProblem(problemId, tagId) {
 // 删除题目标签
 export function removeTagFromProblem(problemId, tagId) {
     return request({
-        url: '/problem/delete-tag-from-problem',
+        url: '/admin/problem/delete-tag-from-problem',
         method: 'delete',
         params: {
             problemId,
@@ -131,7 +131,7 @@ export function addTestCase(testCase) {
 // 删除题目的测试用例
 export function deleteTestCase(id) {
     return request({
-        url: '/problem/delete-test-case',
+        url: '/admin/problem/delete-test-case',
         method: 'delete',
         params: { id }
     })

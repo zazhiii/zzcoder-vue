@@ -21,7 +21,7 @@
 
 <script>
 import { login } from '@/api/auth'
-import { setToken } from '@/utils/auth'
+import { setToken } from '@/utils/cookie'
 export default {
     name: 'LoginView',
     data() {

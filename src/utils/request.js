@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { getToken } from '@/utils/auth'
+import { getToken } from '@/utils/cookie'
 import { Message } from 'element-ui'
 
 // 创建一个 axios 实例
@@ -30,6 +30,7 @@ _axios.interceptors.response.use(
         if (body.code === 1) {
             return body
         } else {
+            // Message.error(body.msg || '请求失败')
             throw new Error(body.msg || '请求失败')
         }
     },
@@ -45,7 +46,7 @@ _axios.interceptors.response.use(
                     message = '未授权，请登录'
                     break
                 case 403:
-                    message = '拒绝访问'
+                    message = '禁止访问'
                     break
                 case 404:
                     message = `请求地址出错: ${error.response.config.url}`
