@@ -11,11 +11,12 @@
             </el-descriptions-item>
             <el-descriptions-item label="语言">{{ submission.language }}</el-descriptions-item>
             <el-descriptions-item label="状态">
-                <el-tag v-if="submission.status != 'Completed'" type="info">{{ submission.status }}</el-tag>
-                <el-tag v-else :type="getResultType(submission.result)">{{ getResultText(submission.result) }}</el-tag>
+                <!-- <el-tag v-if="submission.status != 'Completed'" type="info">{{ submission.status }}</el-tag> -->
+                <el-tag :type="getResultType(submission.status)">{{ getResultText(submission.status) }}</el-tag>
             </el-descriptions-item>
             <el-descriptions-item label="耗时">{{ submission.timeUsed }}ms</el-descriptions-item>
-            <el-descriptions-item label="内存">{{ (submission.memoryUsed / 1024).toFixed(2) }}MB</el-descriptions-item>
+            <el-descriptions-item label="内存">{{ submission.memoryUsed }}MB</el-descriptions-item>
+            <el-descriptions-item v-if="submission.status != 'AC'" label="错误信息"> TODO </el-descriptions-item>
         </el-descriptions>
 
         <div class="code-section">

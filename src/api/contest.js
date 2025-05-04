@@ -1,19 +1,23 @@
-import axios from '@/utils/request'
+import _axios from '@/utils/request'
 
 export const getContestList = () => {
-    return axios.get('/contest/list');
+    return _axios.get('/contest/list');
 }
 
 export const getContestInfo = (id) => {
-    return axios.get(`/contest/${id}`);
+    return _axios.get(`/contest/${id}`);
 }
 
 export const registerContest = (contestId) => {
-    return axios.post('/contest/register', { contestId });
+    return _axios.post('/contest/register', { contestId });
 }
 
 export const getContestProblems = (contestId) => {
-    return axios.get('/contest/problem', {
+    return _axios.get('/contest/problem', {
         params: { contestId }
     });
+}
+
+export const createContest = (contestDto) => {
+    return _axios.post('admin/contest', contestDto);
 }

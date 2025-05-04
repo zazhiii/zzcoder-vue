@@ -39,11 +39,8 @@
                     <!-- 状态 | 结果 -->
                     <el-table-column prop="status" label="状态" width="120">
                         <template #default="scope">
-                            <el-tag v-if="scope.row.status != 'Completed'" type="info">
-                                {{ scope.row.status }}
-                            </el-tag>
-                            <el-tag v-else :type="getResultType(scope.row.result)">
-                                {{ getResultText(scope.row.result) }}
+                            <el-tag :type="getResultType(scope.row.status)">
+                                {{ getResultText(scope.row.status) }}
                             </el-tag>
                         </template>
                     </el-table-column>
@@ -52,7 +49,7 @@
                     <!-- 内存 -->
                     <el-table-column prop="memoryUsed" label="内存(MB)" width="100">
                         <template #default="scope">
-                            {{ (scope.row.memoryUsed / 1024).toFixed(2) }}
+                            {{ scope.row.memoryUsed }}
                         </template>
                     </el-table-column>
 
@@ -135,6 +132,8 @@ export default {
     methods: {
         getResultType(result) {
             const statusMap = {
+                'Judging': 'info',
+                'Pending': 'info',
                 'AC': 'success',
                 'WA': 'danger',
                 'TLE': 'warning',
@@ -147,6 +146,8 @@ export default {
         },
         getResultText(result) {
             const statusTextMap = {
+                'Judging': '测评中',
+                'Pending': '待定',
                 'AC': '通过',
                 'WA': '答案错误',
                 'TLE': '超时',

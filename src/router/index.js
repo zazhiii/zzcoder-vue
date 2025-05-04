@@ -84,19 +84,33 @@ const routes = [
       {
         path: 'problem-set',
         component: () => import('@/views/problem-set/index.vue'),
-      },
-      {
-        path: 'problem-set/:id',
-        component: () => import('@/views/problem-set/problemSetInfoView.vue'),
+        children:[
+          {
+            path: ':id',
+            component: () => import('@/views/problem-set/problemSetInfoView.vue'),
+          }
+        ]
       },
       {
         path: 'contest',
         component: () => import('@/views/contest/index.vue'),
+        redirect: 'contest/list',
+        children: [
+          {
+            path: 'list',
+            component: () => import('@/views/contest/contestListView.vue'),
+          },
+          {
+            path: 'create',
+            component: () => import('@/views/contest/createContestView.vue')
+          },
+          {
+            path: ':id',
+            component: () => import('@/views/contest/contestInfoView.vue'),
+          }
+        ]
       },
-      {
-        path: 'contest/:id',
-        component: () => import('@/views/contest/contestInfoView.vue'),
-      }
+      
     ]
   },
 ]
