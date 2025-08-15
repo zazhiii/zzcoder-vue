@@ -13,10 +13,6 @@
                             <i class="el-icon-collection"></i>
                             <h3>题库</h3>
                             <p>海量编程题目等你来挑战</p>
-                            <div class="card-footer">
-                                <span>题目总数: {{stats.problemCount}}</span>
-                                <el-progress :percentage="stats.problemPassRate" :format="percentageFormat"></el-progress>
-                            </div>
                         </el-card>
                     </el-col>
                     <el-col :span="8">
@@ -24,12 +20,6 @@
                             <i class="el-icon-notebook-2"></i>
                             <h3>题单</h3>
                             <p>精心编排的题目集合助你进步</p>
-                            <div class="card-footer">
-                                <span>题单总数: {{stats.problemSetCount}}</span>
-                                <div class="tags">
-                                    <el-tag size="small" v-for="tag in stats.hotTags" :key="tag">{{tag}}</el-tag>
-                                </div>
-                            </div>
                         </el-card>
                     </el-col>
                     <el-col :span="8">
@@ -37,11 +27,6 @@
                             <i class="el-icon-trophy"></i>
                             <h3>竞赛</h3>
                             <p>参加比赛提升实战能力</p>
-                            <div class="card-footer">
-                                <span>正在进行: {{stats.ongoingContests}}场</span>
-                                <el-countdown v-if="nextContest" :value="nextContest.startTime" format="距离下场比赛: DD 天 HH:mm:ss">
-                                </el-countdown>
-                            </div>
                         </el-card>
                     </el-col>
                 </el-row>
@@ -50,34 +35,31 @@
 
         <!-- 用户信息卡片 -->
         <el-row :gutter="20">
-            <el-col :span="8">
+            <el-col :span="isLogin ? 8 : 24">
                 <el-card class="user-card" v-if="userInfo.username">
                     <div class="user-info">
                         <div class="user-profile">
                             <div class="user-header">
                                 <el-avatar :src="userInfo.avatarUrl" :size="64"></el-avatar>
-                                <h2>{{userInfo.username}}</h2>
+                                <h2>{{ userInfo.username }}</h2>
                             </div>
-                            <div class="user-rank">
-                                <el-tag :type="getRankType(userInfo.rank)">{{userInfo.rank}}</el-tag>
-                                <span class="rating">Rating: {{userInfo.rating}}</span>
-                            </div>
+                            <!-- <div class="user-rank">
+                                <el-tag :type="getRankType(userInfo.rank)">{{ userInfo.rank }}</el-tag>
+                                <span class="rating">Rating: {{ userInfo.rating }}</span>
+                            </div> -->
                             <div class="user-stats">
                                 <div class="stat-item">
                                     <span class="stat-label">已解决题目</span>
-                                    <span class="stat-value">{{userInfo.solvedCount || 0}}</span>
+                                    <span class="stat-value">{{ userInfo.solvedCount || 0 }}</span>
                                 </div>
                                 <div class="stat-item">
                                     <span class="stat-label">提交次数</span>
-                                    <span class="stat-value">{{userInfo.submissionCount || 0}}</span>
+                                    <span class="stat-value">{{ userInfo.submissionCount || 0 }}</span>
                                 </div>
-                                <div class="stat-item">
+                                <!-- <div class="stat-item">
                                     <span class="stat-label">通过率</span>
-                                    <span class="stat-value">{{calculatePassRate}}%</span>
-                                </div>
-                            </div>
-                            <div class="solved-progress">
-                                <el-progress :percentage="solvedProgress" :format="percentageFormat"></el-progress>
+                                    <span class="stat-value">{{ calculatePassRate }}%</span>
+                                </div> -->
                             </div>
                         </div>
                     </div>
@@ -94,10 +76,11 @@
 
             <el-col :span="16">
                 <!-- 最近提交记录 -->
-                <el-card class="recent-submissions" v-if="userInfo.username">
+                <!-- <el-card class="recent-submissions" v-if="userInfo.username">
                     <div slot="header">
                         <span>最近提交</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="$router.push('/submissions')">
+                        <el-button style="float: right; padding: 3px 0" type="text"
+                            @click="$router.push('/submissions')">
                             查看更多
                         </el-button>
                     </div>
@@ -105,152 +88,132 @@
                         <el-table-column prop="problemTitle" label="题目" width="250">
                             <template #default="scope">
                                 <el-link @click="$router.push(`/problem/${scope.row.problemId}`)">
-                                    {{scope.row.problemTitle}}
+                                    {{ scope.row.problemTitle }}
                                 </el-link>
                             </template>
-                        </el-table-column>
-                        <el-table-column prop="submitTime" label="提交时间" width="180">
-                            <template #default="scope">
-                                {{new Date(scope.row.submitTime).toLocaleString('zh-CN')}}
+</el-table-column>
+<el-table-column prop="submitTime" label="提交时间" width="180">
+    <template #default="scope">
+                                {{ new Date(scope.row.submitTime).toLocaleString('zh-CN') }}
                             </template>
-                        </el-table-column>
-                        <el-table-column prop="language" label="语言" width="100"></el-table-column>
-                        <el-table-column prop="status" label="状态" width="120">
-                            <template #default="scope">
+</el-table-column>
+<el-table-column prop="language" label="语言" width="100"></el-table-column>
+<el-table-column prop="status" label="状态" width="120">
+    <template #default="scope">
                                 <el-tag :type="getResultType(scope.row.status)">
-                                    {{getResultText(scope.row.status)}}
+                                    {{ getResultText(scope.row.status) }}
                                 </el-tag>
                             </template>
-                        </el-table-column>
-                    </el-table>
-                </el-card>
-                <!-- 热门题目推荐 -->
-                <el-card class="hot-problems" v-else>
-                    <div slot="header">
-                        <span>热门题目</span>
-                        <el-button style="float: right; padding: 3px 0" type="text" @click="$router.push('/problem')">
-                            更多题目
-                        </el-button>
-                    </div>
-                    <el-table :data="hotProblems" style="width: 100%">
-                        <el-table-column prop="title" label="题目" width="250">
-                            <template #default="scope">
-                                <el-link @click="$router.push(`/problem/${scope.row.id}`)">
-                                    {{scope.row.title}}
-                                </el-link>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="difficulty" label="难度" width="100">
-                            <template #default="scope">
-                                <el-tag :type="getDifficultyType(scope.row.difficulty)">
-                                    {{scope.row.difficulty}}
-                                </el-tag>
-                            </template>
-                        </el-table-column>
-                        <el-table-column prop="passRate" label="通过率" width="120">
-                            <template #default="scope">
-                                {{scope.row.passRate}}%
-                            </template>
-                        </el-table-column>
-                    </el-table>
-                </el-card>
+</el-table-column>
+</el-table>
+</el-card> -->
             </el-col>
         </el-row>
-
-        <!-- 排行榜 -->
-        <el-card class="leaderboard">
-            <div slot="header">
-                <span>排行榜</span>
-                <el-radio-group v-model="leaderboardType" size="small" style="float: right">
-                    <el-radio-button label="rating">Rating</el-radio-button>
-                    <el-radio-button label="solved">解题数</el-radio-button>
-                </el-radio-group>
-            </div>
-            <el-table :data="leaderboardData" style="width: 100%">
-                <el-table-column type="index" label="排名" width="80"></el-table-column>
-                <el-table-column prop="username" label="用户" width="200">
+        <!-- 近期比赛 -->
+        <el-card class="upcoming-contests">
+            <h3>即将到来的比赛</h3>
+            <el-checkbox-group v-model="chosenPlatforms" @change="fetchUpcomingContests">
+                <el-checkbox label="leetcode"></el-checkbox>
+                <el-checkbox label="codeforces"></el-checkbox>
+                <el-checkbox label="nowcoder"></el-checkbox>
+                <el-checkbox label="luogu"></el-checkbox>
+                <el-checkbox label="atcoder"></el-checkbox>
+            </el-checkbox-group>
+            <el-table :data="upcomingContests">
+                <el-table-column prop="event" label="竞赛名称" width="500">
                     <template #default="scope">
-                        <el-link @click="$router.push(`/user/${scope.row.userId}`)">
-                            {{scope.row.username}}
-                        </el-link>
+                        <el-link :href="scope.row.href" target="_blank" type="primary">{{ scope.row.event }}</el-link>
                     </template>
                 </el-table-column>
-                <el-table-column :prop="leaderboardType" :label="leaderboardType === 'rating' ? 'Rating' : '解题数'">
+                <el-table-column prop="start" label="开始时间" width="180">
                     <template #default="scope">
-                        <span v-if="leaderboardType === 'rating'">
-                            {{scope.row.rating}}
-                            <el-tag size="mini" :type="getRankType(scope.row.rank)">{{scope.row.rank}}</el-tag>
-                        </span>
-                        <span v-else>{{scope.row.solved}}</span>
+                        {{ new Date(scope.row.start).toLocaleString('zh-CN') }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="end" label="结束时间" width="180">
+                    <template #default="scope">
+                        {{ new Date(scope.row.end).toLocaleString('zh-CN') }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="duration" label="持续时间" width="150">
+                    <template #default="scope">
+                        {{ Math.floor(scope.row.duration / 60) }} 分钟
+                    </template>
+                </el-table-column>
+                <el-table-column label="距离比赛开始" width="150">
+                    <template #default="scope">
+                        {{ getRemainingTime(scope.row.start) }}
+                    </template>
+                </el-table-column>
+                <el-table-column prop="resource" label="来源" width="200">
+                    <template #default="scope">
+                        <!-- target="_blank": 在新标签页中打开 -->
+                        <el-link :href="`https://${scope.row.resource}`" target="_blank" type="success">{{
+                            scope.row.resource }}</el-link>
                     </template>
                 </el-table-column>
             </el-table>
-        </el-card>
-
-        <!-- 最新动态 -->
-        <el-card class="news-feed">
-            <div slot="header">
-                <span>最新动态</span>
-            </div>
-            <el-timeline>
-                <el-timeline-item v-for="(activity, index) in activities" :key="index" :timestamp="activity.time">
-                    <el-card>
-                        <h4>{{activity.title}}</h4>
-                        <p>{{activity.content}}</p>
-                    </el-card>
-                </el-timeline-item>
-            </el-timeline>
         </el-card>
     </div>
 </template>
 
 <script>
+import { getUpcomingContests } from "@/api/clist"
 export default {
     name: 'HomePage',
+    created() {
+        this.fetchUpcomingContests();
+    },
     async mounted() {
-        if(this.$store.state.userInfo.username) {
+        if (this.$store.state.userInfo.username) {
             await this.$store.dispatch('getUserInfo');
             this.fetchRecentSubmissions();
         }
-        this.fetchStats();
-        this.fetchLeaderboard();
-        this.fetchHotProblems();
-        this.fetchActivities();
     },
     data() {
         return {
-            stats: {
-                problemCount: 0,
-                problemSetCount: 0,
-                ongoingContests: 0,
-                problemPassRate: 65,
-                hotTags: ['动态规划', '贪心', '图论']
-            },
-            recentSubmissions: [],
-            nextContest: {
-                startTime: Date.now() + 24 * 60 * 60 * 1000
-            },
-            leaderboardType: 'rating',
-            leaderboardData: [],
-            hotProblems: [],
-            activities: []
+            upcomingContests: [],
+            chosenPlatforms: ['leetcode', 'codeforces', 'nowcoder', 'luogu', 'atcoder'],
         }
     },
     computed: {
         userInfo() {
             return this.$store.state.userInfo;
         },
-        calculatePassRate() {
-            if (!this.userInfo.submissionCount) return 0;
-            return ((this.userInfo.solvedCount / this.userInfo.submissionCount) * 100).toFixed(1);
-        },
-        solvedProgress() {
-            return (this.userInfo.solvedCount / this.stats.problemCount * 100) || 0;
+        isLogin() {
+            return true; // TODO
         }
     },
     methods: {
-        percentageFormat(percentage) {
-            return percentage.toFixed(1) + '%';
+        // 获取距离比赛开始的时间
+        getRemainingTime(startTime) {
+            const now = new Date();
+            const start = new Date(startTime);
+            const diff = start - now;
+            if(diff > 24 * 60 * 60 * 1000){
+                const day = Math.floor(diff / 1000 / 60 / 60 / 24);
+                const hour = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                return day + " 天 " + hour + " 小时";
+            }
+            if(diff > 60 * 60 * 1000){
+                const hour = Math.floor(diff / 1000 / 60 / 60);
+                return hour + " 小时";
+            }
+            if(diff > 60 * 1000){
+                const minute = Math.floor(diff / 1000 / 60);
+                return minute + " 分钟";
+            }
+            return Math.floor(diff / 1000) + " 秒";
+        },
+        // 获取即将到来的比赛
+        async fetchUpcomingContests() {
+            if (this.chosenPlatforms.length === 0) {
+                this.upcomingContests = [];
+                return;
+            }
+            const regex = this.chosenPlatforms.join('|');
+            const resp = await getUpcomingContests(regex);
+            this.upcomingContests = resp.data.objects;
         },
         getResultType(result) {
             const statusMap = {
@@ -356,13 +319,16 @@ export default {
 
 <style scoped>
 .home-container {
-    max-width: 1200px;
-    margin: 0 auto;
-    padding: 20px;
+    padding-left: 100px;
+    padding-right: 100px;
 }
 
 .welcome-card {
     margin-bottom: 20px;
+}
+
+.upcoming-contests {
+    margin-top: 20px;
 }
 
 .welcome-header {
@@ -387,7 +353,7 @@ export default {
 
 .welcome-content .el-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 2px 12px 0 rgba(0,0,0,0.1);
+    box-shadow: 0 2px 12px 0 rgba(0, 0, 0, 0.1);
 }
 
 .welcome-content i {

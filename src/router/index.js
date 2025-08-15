@@ -31,7 +31,7 @@ const routes = [
   },
   {
     path: '/',
-    component: () => import('@/views/main.vue'),
+    component: () => import('@/views/main'),
     redirect: '/home',
     children: [
       {

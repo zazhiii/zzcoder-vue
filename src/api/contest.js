@@ -1,7 +1,15 @@
 import _axios from '@/utils/request'
 
-export const getContestList = () => {
-    return _axios.get('/contest/list');
+export const getContestList = ({pageNum, pageSize, keyword, contestStatus, type}) => {
+    return _axios.get('/contest/list', {
+        params: {
+            pageNum,
+            pageSize,
+            keyword,
+            contestStatus,
+            type
+        }
+    });
 }
 
 export const getContestInfo = (id) => {
