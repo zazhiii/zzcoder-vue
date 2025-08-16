@@ -158,7 +158,8 @@
 </template>
 
 <script>
-import { getUpcomingContests } from "@/api/clist"
+// import { getUpcomingContests } from "@/api/clist"
+import { getUpcomingContestsFromClist } from '@/api/contest';
 export default {
     name: 'HomePage',
     created() {
@@ -212,8 +213,8 @@ export default {
                 return;
             }
             const regex = this.chosenPlatforms.join('|');
-            const resp = await getUpcomingContests(regex);
-            this.upcomingContests = resp.data.objects;
+            const { data } = await getUpcomingContestsFromClist(regex);
+            this.upcomingContests = data;
         },
         getResultType(result) {
             const statusMap = {

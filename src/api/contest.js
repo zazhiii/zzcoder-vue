@@ -29,3 +29,12 @@ export const getContestProblems = (contestId) => {
 export const createContest = (contestDto) => {
     return _axios.post('admin/contest', contestDto);
 }
+
+export const getUpcomingContestsFromClist = (resourceRegex) => {
+    return _axios.get('/contest/clist', {
+        params: { 
+            resourceRegex,
+            upcoming: true
+        }
+    });
+}
