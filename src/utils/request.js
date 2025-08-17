@@ -24,15 +24,22 @@ _axios.interceptors.request.use(
     }
 )
 // 响应拦截器
+// 后端返回的Result结构
+// code: 1成功，0和其它数字为失败
+// msg: 错误信息
+// data: 业务数据
 _axios.interceptors.response.use(
     response => {
         const body = response.data
-        if (body.code === 1) {
-            return body
-        } else {
-            // Message.error(body.msg || '请求失败')
-            throw new Error(body.msg || '请求失败')
+        if(body.code !== 1){
+            Message({
+                message: body.msg || '操作失败',
+                type: 'error',
+                duration: 5000,
+            })
+            return Promise.reject(body.msg)
         }
+        return body.data
     },
     error => {
         console.log('err' + error) // 用于调试

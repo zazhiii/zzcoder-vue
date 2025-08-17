@@ -50,8 +50,8 @@ export default {
                     const { username, password } = this.loginForm
                     try {
                         // 调用登录 API，传入用户名和密码   
-                        const body = await login({ identification: username.trim(), password: password })
-                        setToken(body.data)
+                        const data = await login({ identification: username.trim(), password: password })
+                        setToken(data)
                         // 跳转到主页
                         this.$router.replace('/')
                     } catch (error) {
