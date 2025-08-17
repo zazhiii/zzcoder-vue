@@ -16,7 +16,7 @@
             </el-descriptions-item>
             <el-descriptions-item label="耗时">{{ submission.timeUsed }}ms</el-descriptions-item>
             <el-descriptions-item label="内存">{{ submission.memoryUsed }}MB</el-descriptions-item>
-            <el-descriptions-item v-if="submission.status != 'AC'" label="错误信息"> TODO </el-descriptions-item>
+            <el-descriptions-item v-if="submission.status != 'AC'" label="错误信息">{{ submission.errorMessage }}</el-descriptions-item>
         </el-descriptions>
 
         <div class="code-section">
@@ -51,7 +51,8 @@ export default {
                 result: '',
                 timeUsed: 0,
                 memoryUsed: 0,
-                code: ''
+                code: '',
+                errorMessage: ''
             }
         }
     },

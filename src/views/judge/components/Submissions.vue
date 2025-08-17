@@ -132,8 +132,8 @@ export default {
     methods: {
         getResultType(result) {
             const statusMap = {
-                'Judging': 'info',
-                'Pending': 'info',
+                'JUDGING': 'info',
+                'PENDING': 'info',
                 'AC': 'success',
                 'WA': 'danger',
                 'TLE': 'warning',
@@ -146,15 +146,15 @@ export default {
         },
         getResultText(result) {
             const statusTextMap = {
-                'Judging': '测评中',
-                'Pending': '待定',
+                'JUDGING': '测评中',
+                'PENDING': '待定',
                 'AC': '通过',
                 'WA': '答案错误',
                 'TLE': '超时',
                 'MLE': '内存超限',
                 'RE': '运行错误',
                 'CE': '编译错误',
-                'PE': '格式错误'
+                'SE': '系统错误'
             }
             return statusTextMap[result] || '未知'
         },

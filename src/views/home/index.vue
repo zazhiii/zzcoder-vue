@@ -76,7 +76,7 @@
 
             <el-col :span="16">
                 <!-- 最近提交记录 -->
-                <!-- <el-card class="recent-submissions" v-if="userInfo.username">
+                <el-card class="recent-submissions" v-if="userInfo.username">
                     <div slot="header">
                         <span>最近提交</span>
                         <el-button style="float: right; padding: 3px 0" type="text"
@@ -91,22 +91,22 @@
                                     {{ scope.row.problemTitle }}
                                 </el-link>
                             </template>
-</el-table-column>
-<el-table-column prop="submitTime" label="提交时间" width="180">
-    <template #default="scope">
+                        </el-table-column>
+                        <el-table-column prop="submitTime" label="提交时间" width="180">
+                            <template #default="scope">
                                 {{ new Date(scope.row.submitTime).toLocaleString('zh-CN') }}
                             </template>
-</el-table-column>
-<el-table-column prop="language" label="语言" width="100"></el-table-column>
-<el-table-column prop="status" label="状态" width="120">
-    <template #default="scope">
+                        </el-table-column>
+                        <el-table-column prop="language" label="语言" width="100"></el-table-column>
+                        <el-table-column prop="status" label="状态" width="120">
+                            <template #default="scope">
                                 <el-tag :type="getResultType(scope.row.status)">
                                     {{ getResultText(scope.row.status) }}
                                 </el-tag>
                             </template>
-</el-table-column>
-</el-table>
-</el-card> -->
+                        </el-table-column>
+                    </el-table>
+                </el-card>
             </el-col>
         </el-row>
         <!-- 近期比赛 -->
@@ -119,7 +119,7 @@
                 <el-checkbox label="luogu"></el-checkbox>
                 <el-checkbox label="atcoder"></el-checkbox>
             </el-checkbox-group>
-            <el-table :data="upcomingContests">
+            <el-table :data="upcomingContests" v-loading="upcomingTableLoading">
                 <el-table-column prop="event" label="竞赛名称" width="500">
                     <template #default="scope">
                         <el-link :href="scope.row.href" target="_blank" type="primary">{{ scope.row.event }}</el-link>
@@ -127,12 +127,12 @@
                 </el-table-column>
                 <el-table-column prop="start" label="开始时间" width="180">
                     <template #default="scope">
-                        {{ new Date(scope.row.start).toLocaleString('zh-CN') }}
+                        {{ new Date(scope.row.start + 'Z').toLocaleString() }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="end" label="结束时间" width="180">
                     <template #default="scope">
-                        {{ new Date(scope.row.end).toLocaleString('zh-CN') }}
+                        {{ new Date(scope.row.end + 'Z').toLocaleString() }}
                     </template>
                 </el-table-column>
                 <el-table-column prop="duration" label="持续时间" width="150">
@@ -142,7 +142,15 @@
                 </el-table-column>
                 <el-table-column label="距离比赛开始" width="150">
                     <template #default="scope">
-                        {{ getRemainingTime(scope.row.start) }}
+                        <el-tag v-if="new Date(scope.row.start) > new Date()">
+                            {{ getRemainingTime(scope.row.start) }}
+                        </el-tag>
+                        <el-tag v-else-if="new Date(scope.row.end) < new Date()" type="info">
+                            已结束
+                        </el-tag>
+                        <el-tag v-else type="success">
+                            进行中
+                        </el-tag>
                     </template>
                 </el-table-column>
                 <el-table-column prop="resource" label="来源" width="200">
@@ -158,7 +166,6 @@
 </template>
 
 <script>
-// import { getUpcomingContests } from "@/api/clist"
 import { getUpcomingContestsFromClist } from '@/api/contest';
 export default {
     name: 'HomePage',
@@ -175,6 +182,7 @@ export default {
         return {
             upcomingContests: [],
             chosenPlatforms: ['leetcode', 'codeforces', 'nowcoder', 'luogu', 'atcoder'],
+            upcomingTableLoading: false
         }
     },
     computed: {
@@ -189,18 +197,18 @@ export default {
         // 获取距离比赛开始的时间
         getRemainingTime(startTime) {
             const now = new Date();
-            const start = new Date(startTime);
+            const start = new Date(new Date(startTime + 'Z').toLocaleString())
             const diff = start - now;
-            if(diff > 24 * 60 * 60 * 1000){
+            if (diff > 24 * 60 * 60 * 1000) {
                 const day = Math.floor(diff / 1000 / 60 / 60 / 24);
                 const hour = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 return day + " 天 " + hour + " 小时";
             }
-            if(diff > 60 * 60 * 1000){
+            if (diff > 60 * 60 * 1000) {
                 const hour = Math.floor(diff / 1000 / 60 / 60);
                 return hour + " 小时";
             }
-            if(diff > 60 * 1000){
+            if (diff > 60 * 1000) {
                 const minute = Math.floor(diff / 1000 / 60);
                 return minute + " 分钟";
             }
@@ -212,9 +220,11 @@ export default {
                 this.upcomingContests = [];
                 return;
             }
-            const regex = this.chosenPlatforms.join('|');
-            const { data } = await getUpcomingContestsFromClist(regex);
-            this.upcomingContests = data;
+            this.upcomingTableLoading = true
+            const regex = this.chosenPlatforms.join('|')
+            const { data } = await getUpcomingContestsFromClist(regex)
+            this.upcomingContests = data
+            this.upcomingTableLoading = false
         },
         getResultType(result) {
             const statusMap = {

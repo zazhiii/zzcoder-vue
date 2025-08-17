@@ -6,7 +6,7 @@
                     <el-menu-item index="/home">
                         <span>首页</span>
                     </el-menu-item>
-                    <el-menu-item index="/problem/list">
+                    <el-menu-item index="/problem">
                         <span>题库</span>
                     </el-menu-item>
                     <el-menu-item index="/problem-set">

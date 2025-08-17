@@ -3,8 +3,6 @@ import VueRouter from 'vue-router'
 
 Vue.use(VueRouter)
 
-
-
 const routes = [
   {
     path: '/auth',
@@ -45,37 +43,32 @@ const routes = [
       {
         path: 'problem',
         component: () => import('@/views/problem/index.vue'),
-        redirect: '/problem/list',
         children: [
-          {
-            path: 'list',
-            component: () => import('@/views/problem/ProblemListView.vue')
-          },
           {
             path: 'add',
             component: () => import('@/views/problem/admin/addProblemView.vue')
           },
-          {
-            path: ':id',
-            component: () => import('@/views/problem/ProblemView.vue')
-          },
-          {
-            path: 'edit/:id',
-            component: () => import('@/views/problem/admin/editProblemView.vue')
-          },
-          {
-            path: 'judge-result/:problemId',
-            component: () => import('@/views/problem/judgeResultView.vue')
-          },
-          {
-            path: 'addTag/:problemId',
-            component: () => import('@/views/problem/admin/addTagView.vue')
-          },
-          {
-            path: 'editTestCase/:problemId',
-            component: () => import('@/views/problem/admin/editTestCaseView.vue')
-          }
         ]
+      },
+      {
+        path: 'problem/:id',
+        component: () => import('@/views/problem/ProblemView.vue')
+      },
+      {
+        path: 'problem/edit/:id',
+        component: () => import('@/views/problem/admin/editProblemView.vue')
+      },
+      {
+        path: 'problem/editTestCase/:problemId',
+        component: () => import('@/views/problem/admin/editTestCaseView.vue')
+      },
+      {
+        path: 'problem/addTag/:problemId',
+        component: () => import('@/views/problem/admin/addTagView.vue')
+      },
+      {
+        path: 'problem/judge-result/:problemId',
+        component: () => import('@/views/problem/judgeResultView.vue')
       },
       {
         path: 'submissions',
@@ -84,7 +77,7 @@ const routes = [
       {
         path: 'problem-set',
         component: () => import('@/views/problem-set/index.vue'),
-        children:[
+        children: [
           {
             path: ':id',
             component: () => import('@/views/problem-set/problemSetInfoView.vue'),
@@ -110,7 +103,7 @@ const routes = [
           }
         ]
       },
-      
+
     ]
   },
 ]

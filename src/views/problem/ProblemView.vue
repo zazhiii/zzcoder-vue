@@ -135,7 +135,7 @@ export default {
             try {
                 await submitCode({
                     userId: this.userInfo.id,
-                    problemId: this.problem.id,
+                    problemId: this.$route.params.id,
                     code: this.code,
                     language: this.language
                 })
