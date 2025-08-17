@@ -42,9 +42,8 @@
 </template>
 
 <script>
-import { getContestInfo } from '@/api/contest'
-import { getContestProblems } from '@/api/contest'
-import { Message } from 'element-ui';
+import {getContestInfo, getContestProblems} from '@/api/contest'
+import {Message} from 'element-ui';
 
 export default {
     mounted() {
@@ -61,8 +60,7 @@ export default {
     methods: {
         async fetchContestInfo() {
             try {
-                const { data } = await getContestInfo(this.$route.params.id)
-                this.contest = data
+              this.contest = await getContestInfo(this.$route.params.id)
             } catch (error) {
                 console.error('获取比赛信息失败', error)
             }
@@ -73,8 +71,7 @@ export default {
         },
         async fetchContestProblem(contestId) {
             try {
-                const { data } = await getContestProblems(contestId)
-                this.contestProblems = data
+                this.contestProblems = await getContestProblems(contestId)
             } catch (error) {
                 Message.error('获取比赛题目失败')
                 console.error('获取比赛题目失败', error)

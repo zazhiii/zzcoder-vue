@@ -31,6 +31,7 @@
 
 <script>
 import { getContestList } from '@/api/contest'
+import {mapState} from "vuex";
 
 export default {
     name: 'ContestList',
@@ -48,9 +49,7 @@ export default {
         }
     },
     computed: {
-        userInfo() {
-            return this.$store.state.userInfo;
-        }
+        ...mapState('user', ['userInfo']),
     },
     created() {
         this.fetchContests(this.pageQueryDTO)
@@ -58,7 +57,7 @@ export default {
     methods: {
         async fetchContests(pageQueryDTO) {
             try {
-                const { data } = await getContestList(pageQueryDTO)
+                const data = await getContestList(pageQueryDTO)
                 this.contests = data.records
                 this.total = data.total
             } catch (error) {

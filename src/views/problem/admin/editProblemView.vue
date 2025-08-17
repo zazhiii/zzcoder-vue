@@ -133,9 +133,7 @@ export default {
     },
     methods: {
         async fetchProblem() {
-            const id = this.$route.params.id
-            const { data } = await getProblemInfo(id)
-            this.problemForm = data
+            this.problemForm = await getProblemInfo(this.$route.params.id)
         },
         async submitForm() {
             try {

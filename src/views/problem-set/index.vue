@@ -40,7 +40,7 @@ export default {
         async fetchProblemSet() {
             try {
                 const {page, size, title} = this.queryForm;
-                const { data } = await listPublicProblemSet(page, size, title);
+                const data = await listPublicProblemSet(page, size, title);
                 this.problemSets = data.records;
                 this.total = data.total;
             } catch (error) {

@@ -163,7 +163,8 @@ export default {
             this.fetchSubmissions()
         },
         async fetchSubmissions() {
-            const { data } = await getSubmissions(this.localQuery)
+            const data = await getSubmissions(this.localQuery)
+          console.log(data)
             this.total = data.total
             this.submissions = data.records
         }

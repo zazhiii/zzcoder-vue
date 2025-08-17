@@ -37,19 +37,13 @@
 </template>
 
 <script>
+import {mapState} from "vuex";
+
 export default {
     name: 'UserProfileComponent',
     computed: {
-        userInfo() {
-            return this.$store.state.userInfo;
-        }
+        ...mapState('user', ['userInfo']),
     },
-    data() {
-        return {
-            username: this.$store.state.username,
-            avatarUrl: this.$store.state.avatarUrl,
-        }
-    }
 }
 </script>
 

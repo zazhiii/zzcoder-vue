@@ -33,7 +33,7 @@ export default {
     },
     data() {
         return {
-            username: this.$store.state.username
+            username: this.$store.user.state.username
         }
     }
 }

@@ -82,8 +82,7 @@ export default {
             return statusTextMap[result] || '未知'
         },
         async fetchSubmission() {
-            const { data } = await getSubmissionInfo(this.submissionId)
-            this.submission = data
+            this.submission = await getSubmissionInfo(this.submissionId)
         }
     },
     watch: {

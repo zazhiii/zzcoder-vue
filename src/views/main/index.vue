@@ -18,7 +18,7 @@
           <!--                    <el-menu-item index="/discussion">-->
           <!--                        <span>讨论</span>-->
           <!--                    </el-menu-item>-->
-          <div v-if="userInfo.username ">
+          <div v-if="isLogin">
             <el-link type="primary" @click="logout" class="user-actions">退出登录</el-link>
             <el-link type="primary" @click="jump('/user')" class="user-actions">
               {{ userInfo.username }}
@@ -52,10 +52,7 @@ import {mapActions, mapMutations, mapState} from "vuex";
 export default {
   name: 'MainPage',
   computed: {
-    ...mapState('user', ['userInfo']),
-    // isLogin() {
-    //   return getToken();
-    // }
+    ...mapState('user', ['userInfo', 'isLogin']),
   },
   created() {
     if (this.isLogin) {
@@ -64,7 +61,7 @@ export default {
   },
   methods: {
     ...mapActions('user', ['getUserInfo']),
-    ...mapMutations('user', ['clearUserInfo']),
+    ...mapMutations('user', ['clearUserInfo', 'setLogin']),
     jump(url) {
       if (this.$route.path !== url) {
         this.$router.replace(url);
@@ -73,6 +70,7 @@ export default {
     async logout() {
       await logout();
       removeToken();
+      this.setLogin(false);
       this.clearUserInfo()
       this.$message.success('退出成功');
     }

@@ -35,7 +35,7 @@ export default {
         async fetchProblemSet() {
             const id = this.$route.params.id; 
             try {
-                const { data } = await getProblemSet(id);
+                const data = await getProblemSet(id);
                 this.problems = data.problems; 
                 this.title = data.title;
                 this.description = data.description;

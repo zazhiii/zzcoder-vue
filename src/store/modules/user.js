@@ -1,5 +1,6 @@
 import {getUserInfo} from "@/api/user";
 import {getUserInfoLocal, setUserInfoLocal, removeUserInfoLocal} from "@/utils/storage";
+import {getToken} from "@/utils/cookie";
 
 export default {
     namespaced: true,
@@ -10,8 +11,12 @@ export default {
             roles: [],
             permissions: []
         },
+        isLogin: getToken()
     },
     mutations: {
+        setLogin(state, isLogin) {
+            state.isLogin = isLogin;
+        },
         setUserInfo(state, userInfo) {
             state.userInfo = userInfo;
             setUserInfoLocal(userInfo);

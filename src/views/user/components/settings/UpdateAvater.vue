@@ -11,8 +11,9 @@
 </template>
 
 <script>
-import { uploadFile } from '@/api/common';
-import { updateUserAvatar } from '@/api/user';
+import {uploadFile} from '@/api/common';
+import {updateUserAvatar} from '@/api/user';
+import {mapMutations} from "vuex";
 
 export default {
     data() {
@@ -21,12 +22,13 @@ export default {
         };
     },
     methods: {
+        ...mapMutations('user', ['clearUserInfo']),
         async uploadAvatar(options) {
             try {
                 const formData = new FormData();
                 formData.append('file', options.file);
-                const response = await uploadFile(formData); // 调用uploadFile API上传文件,传入formData表单数据,等待上传完成获取响应
-                this.imageUrl = response.data;
+                 // 调用uploadFile API上传文件,传入formData表单数据,等待上传完成获取响应
+              this.imageUrl = await uploadFile(formData);
             } catch (error) {
                 this.$message.error('上传头像失败，请重试');
             }
@@ -45,6 +47,7 @@ export default {
         },
         async updateAvatar() {
             await updateUserAvatar(this.imageUrl);
+            this.clearUserInfo()
             this.$message.success('头像更新成功');
         }
     }

@@ -56,9 +56,8 @@ export default {
     methods: {
         async fetchData() {
             try {
-                const { data : tags } = await getAllTags()
-                this.allTags = tags
-                const { data : problemInfo} = await getProblemInfo(this.problemId)
+                this.allTags = await getAllTags()
+                const problemInfo = await getProblemInfo(this.problemId)
                 this.problemTags = problemInfo.tags
             } catch (error) {
                 this.$message.error('获取标签数据失败')

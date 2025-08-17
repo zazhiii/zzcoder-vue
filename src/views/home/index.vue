@@ -32,10 +32,9 @@
         </el-row>
       </div>
     </el-card>
-
     <!-- 用户信息卡片 -->
     <el-row :gutter="20">
-      <el-col :span="userInfo.username ? 8 : 24">
+      <el-col :span="isLogin ? 8 : 24">
         <el-card class="user-card" v-if="userInfo.username">
           <div class="user-info">
             <div class="user-profile">
@@ -182,14 +181,12 @@ export default {
     return {
       upcomingContests: [],
       chosenPlatforms: ['leetcode', 'codeforces', 'nowcoder', 'luogu', 'atcoder'],
-      upcomingTableLoading: false
+      upcomingTableLoading: false,
+      recentSubmissions: [] // TODO
     }
   },
   computed: {
-    ...mapState('user', ['userInfo']),
-    // isLogin() {
-    //   return getToken();
-    // }
+    ...mapState('user', ['userInfo', 'isLogin']),
   },
   methods: {
     // 获取距离比赛开始的时间
