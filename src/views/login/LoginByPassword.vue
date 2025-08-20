@@ -47,23 +47,26 @@ export default {
     jump(url) {
       this.$router.replace(url);
     },
-    submitLogin() {
-      this.$refs.loginForm.validate(async valid => {
-        if (valid) {
-          const {username, password} = this.loginForm
-          try {
-            // 调用登录 API，传入用户名和密码
-            const data = await login({identification: username.trim(), password: password})
-            setToken(data)
-            this.setLogin(true)
-            // 跳转到主页
-            this.$router.replace('/')
-          } catch (error) {
-            console.error('登录错误:', error);
-          }
-        }
-      });
-    },
-  }
+    methods: {
+        jump(url) {
+            this.$router.replace(url);
+        },
+        submitLogin() {
+            this.$refs.loginForm.validate(async valid => {
+                if (valid) {
+                    const { username, password } = this.loginForm
+                    try {
+                        // 调用登录 API，传入用户名和密码
+                        const data = await login({ identification: username.trim(), password: password })
+                        setToken(data)
+                        // 跳转到主页
+                        this.$router.replace('/')
+                    } catch (error) {
+                        console.error('登录错误:', error);
+                    }
+                }
+            });
+        },
+    }
 };
 </script>
