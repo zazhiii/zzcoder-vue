@@ -3,21 +3,10 @@
     <el-container>
       <el-header>
         <el-menu router :default-active=this.$route.path mode="horizontal">
-          <el-menu-item index="/home">
-            <span>首页</span>
-          </el-menu-item>
-          <el-menu-item index="/problem">
-            <span>题库</span>
-          </el-menu-item>
-          <el-menu-item index="/problem-set">
-            <span>题单</span>
-          </el-menu-item>
-          <el-menu-item index="/contest">
-            <span>竞赛</span>
-          </el-menu-item>
-          <!--                    <el-menu-item index="/discussion">-->
-          <!--                        <span>讨论</span>-->
-          <!--                    </el-menu-item>-->
+          <el-menu-item index="/home">首页</el-menu-item>
+          <el-menu-item index="/problem">题库</el-menu-item>
+          <el-menu-item index="/problem-set">题单</el-menu-item>
+          <el-menu-item index="/contest">竞赛</el-menu-item>
           <div v-if="isLogin">
             <el-link type="primary" @click="logout" class="user-actions">退出登录</el-link>
             <el-link type="primary" @click="jump('/user')" class="user-actions">
@@ -39,7 +28,6 @@
       <el-main>
         <router-view/>
       </el-main>
-
     </el-container>
   </div>
 </template>
@@ -52,7 +40,7 @@ import {mapActions, mapMutations, mapState} from "vuex";
 export default {
   name: 'MainPage',
   computed: {
-    ...mapState('user', ['userInfo', 'isLogin']),
+    ...mapState('user', ['userInfo', 'isLogin'])
   },
   created() {
     if (this.isLogin) {

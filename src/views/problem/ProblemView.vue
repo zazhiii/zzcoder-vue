@@ -1,83 +1,79 @@
 <template>
   <div class="problem-container">
-    <el-card class="problem-detail">
-      <div slot="header">
-        <span>{{ problem.title }}</span>
-        <!-- TODO: 细分权限管理 -->
-        <el-button v-if="hasPermission(permissions.PROBLEM_TAG_ADD)" class="problem-action-btn" type="text"
+    <!-- 顶部 -->
+    <div class="header">
+      <h1 class="inline-title">{{ problem.problemId }}</h1>
+      <h1 class="inline-title">{{ problem.title }}</h1>
+      <el-button-group class="problem-action-btn">
+        <el-button v-if="hasPermission(permissions.PROBLEM_UPDATE)"
+                   type="primary" size="mini"
+                   @click="jump(`/problem/edit/${problem.id}`)">编辑题目
+        </el-button>
+        <el-button v-if="hasPermission(permissions.PROBLEM_TAG_ADD)"
+                   type="primary" size="mini"
                    @click="jump(`/problem/addTag/${problem.id}`)">修改标签
         </el-button>
         <el-button
             v-if="hasPermission(permissions.PROBLEM_ADD_TEST_CASE) && hasPermission(permissions.PROBLEM_DELETE_TEST_CASE)"
-            class="problem-action-btn" type="text"
+            type="primary" size="mini"
             @click="jump(`/problem/editTestCase/${problem.id}`)">测试数据
         </el-button>
-        <el-button v-if="hasPermission(permissions.PROBLEM_UPDATE)" class="problem-action-btn" type="text"
-                   @click="jump(`/problem/edit/${problem.id}`)">编辑题目
-        </el-button>
-
-      </div>
-      <!-- 题目信息 -->
-      <div class="problem-info">
-        <el-tag v-for="tag in problem.tags" :key="tag.id" style="margin-right: 10px;">{{ tag.name }}</el-tag>
-        <DifficultyTag :difficulty="problem.difficulty"/>
-        <div class="problem-limits">
-          <el-tag type="info">时间限制: {{ problem.timeLimit / 1000 }}s</el-tag>
-          <el-tag type="info">内存限制: {{ problem.memoryLimit }}MB</el-tag>
-          <!-- <el-tag type="info">栈限制: {{ problem.stackLimit }}MB</el-tag> -->
+      </el-button-group>
+    </div>
+    <!-- main -->
+    <el-row :gutter="20">
+      <el-col :span="12">
+        <!-- 题目信息 -->
+        <div class="problem-info">
+          <div class="problem-limits">
+            <el-descriptions :column="3" border size="mini">
+              <el-descriptions-item label="时间限制">{{ problem.timeLimit / 1000 }}s</el-descriptions-item>
+              <el-descriptions-item label="内存限制">{{ problem.memoryLimit }}MB</el-descriptions-item>
+              <el-descriptions-item label="创建者">{{ problem.createUser }}</el-descriptions-item>
+              <el-descriptions-item label="提交次数">{{ 888 }}</el-descriptions-item>
+              <el-descriptions-item label="通过次数">{{ 888 }}</el-descriptions-item>
+              <el-descriptions-item label="难度"><DifficultyTag :difficulty="problem.difficulty"/></el-descriptions-item>
+            </el-descriptions>
+          </div>
+          <el-tag v-for="tag in problem.tags" :key="tag.id" style="margin-right: 10px;">{{ tag.name }}</el-tag>
+          <div class="problem-source" v-if="problem.source">
+            <span>来源: {{ problem.source }}</span>
+          </div>
         </div>
-        <div class="problem-source" v-if="problem.source">
-          <span>来源: {{ problem.source }}</span>
-        </div>
-      </div>
-      <!-- 题目内容 -->
-      <div class="problem-content">
-        <h3>题目描述</h3>
-        <div v-html="problem.description"></div>
-
-        <h3>输入格式</h3>
-        <div v-html="problem.inputDescription"></div>
-
-        <h3>输出格式</h3>
-        <div v-html="problem.outputDescription"></div>
-
-        <h3>样例</h3>
-        <div v-for="(example, index) in problem.examples" :key="index">
-          <h4>样例 {{ index + 1 }}</h4>
-          <pre>输入: {{ example.input }}</pre>
-          <pre>输出: {{ example.output }}</pre>
+        <!-- 题目内容 -->
+        <div class="problem-content">
+          <h3>题目描述</h3>
+          <markdown-renderer :content="problem.description"></markdown-renderer>
+          <h3>输入格式</h3>
+          <markdown-renderer :content="problem.inputDescription"></markdown-renderer>
+          <h3>输出格式</h3>
+          <markdown-renderer :content="problem.outputDescription"></markdown-renderer>
+          <h3>样例</h3>
+          <div v-for="(example, index) in problem.examples" :key="index">
+            <h4>样例 {{ index + 1 }}</h4>
+            <pre>输入: {{ example.input }}</pre>
+            <pre>输出: {{ example.output }}</pre>
+          </div>
+          <h3>提示</h3>
+          <markdown-renderer :content="problem.hint"></markdown-renderer>
         </div>
 
-        <h3>提示</h3>
-        <div v-html="problem.hint"></div>
-      </div>
-
-      <!-- 提交代码 -->
-      <div class="problem-submit">
-        <el-button type="primary" @click="submitProblem">提交代码</el-button>
-      </div>
-      <!-- 代码编辑器 -->
-      <div class="code-editor">
-        <el-form>
-          <el-form-item label="代码语言">
-            <el-select v-model="language" placeholder="请选择语言" :disabled="!token">
-              <!-- <el-option label="C++" value="cpp"></el-option> -->
-              <el-option label="Java" value="java"></el-option>
-              <!-- <el-option label="Python" value="python"></el-option> -->
-            </el-select>
-            <div v-if="!token" style="color: #F56C6C; font-size: 12px;">请先登录后再选择语言</div>
-            <!-- <button @click="changeTheme">Toggle Theme</button> -->
-          </el-form-item>
-
-          <el-form-item label="代码">
-            <el-input type="textarea" v-model="code" :rows="10" :autosize="{ minRows: 10 }"
-                      :disabled="!token"/>
-            <!-- <codeEditor v-model="code" :language="language" /> -->
-            <div v-if="!token" style="color: #F56C6C; font-size: 12px;">请先登录后再编写代码</div>
-          </el-form-item>
-        </el-form>
-      </div>
-    </el-card>
+      </el-col>
+      <el-col :span="12">
+        <!-- 提交代码 -->
+        <div class="problem-submit">
+          <el-select v-model="language" placeholder="请选择语言" size="mini">
+            <el-option label="Java" value="java"></el-option>
+          </el-select>
+          <el-button type="primary" :disabled="!isLogin" @click="submitProblem" size="mini">提交代码</el-button>
+          <div v-if="!isLogin" style="color: #F56C6C; font-size: 12px;">请登录之后再提交代码</div>
+        </div>
+        <!-- 代码编辑器 -->
+        <div class="code">
+          <code-editor v-model="code" :language="language" :height="600"/>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
@@ -85,17 +81,21 @@
 import {getToken} from '@/utils/cookie'
 import {getProblemInfo} from '@/api/problem'
 import {submitCode} from '@/api/judge'
-import DifficultyTag from './components/difficultyTag.vue'
+import DifficultyTag from './components/DifficultyTag.vue'
 import {Permissions} from '@/config/permissions'
 import {mapState} from "vuex";
+import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
+import CodeEditor from "@/components/CodeEditor.vue";
 
 export default {
   name: 'ProblemView',
   components: {
+    CodeEditor,
+    MarkdownRenderer,
     DifficultyTag,
   },
   computed: {
-    ...mapState('user', ['userInfo'])
+    ...mapState('user', ['userInfo', 'isLogin'])
   },
   data() {
     return {
@@ -111,7 +111,7 @@ export default {
         outputDescription: '',
         examples: [],
         hint: '',
-        difficulty: '',
+        difficulty: 0,
         createUser: '',
         source: '',
         tags: []
@@ -159,16 +159,19 @@ export default {
 </script>
 
 <style scoped>
-.problem-action-btn {
-  margin: 0 10px 0 10px;
-  float: right;
+.inline-title {
+  display: inline;
+  margin: 0 5px 0;
 }
 
-.problem-detail {
-  margin-bottom: 20px;
+.problem-action-btn {
+  float: right;
+  line-height: 40px;
+  margin-top: 3px;
 }
 
 .problem-info {
+  height: 20px;
   margin: 20px 0;
 }
 

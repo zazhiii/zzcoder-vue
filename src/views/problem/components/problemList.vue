@@ -24,12 +24,12 @@
 </template>
 
 <script>
-import DifficultyTag from './difficultyTag.vue';
+import DifficultyTag from './DifficultyTag.vue';
 
 export default {
     name: 'problemList',
     components: {
-        DifficultyTag
+      DifficultyTag
     },
     props: {
         problems: {

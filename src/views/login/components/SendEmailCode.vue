@@ -1,4 +1,3 @@
-<!-- src/components/EmailVerificationButton.vue -->
 <template>
     <el-button type="primary" @click="handleClick" :disabled="isButtonDisabled" style="width: 30%; margin-left: 2%;">
         {{ buttonText }}
