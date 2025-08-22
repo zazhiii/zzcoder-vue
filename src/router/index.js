@@ -56,7 +56,7 @@ const routes = [
       },
       {
         path: 'problem/edit/:id',
-        component: () => import('@/views/problem/admin/editProblemView.vue')
+        component: () => import('@/views/problem/admin/EditProblem.vue')
       },
       {
         path: 'problem/editTestCase/:problemId',

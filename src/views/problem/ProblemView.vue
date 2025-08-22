@@ -26,34 +26,40 @@
         <!-- 题目信息 -->
         <div class="problem-info">
           <div class="problem-limits">
-            <el-descriptions :column="3" border size="mini">
+            <el-descriptions :column="4" border size="mini">
               <el-descriptions-item label="时间限制">{{ problem.timeLimit / 1000 }}s</el-descriptions-item>
               <el-descriptions-item label="内存限制">{{ problem.memoryLimit }}MB</el-descriptions-item>
               <el-descriptions-item label="创建者">{{ problem.createUser }}</el-descriptions-item>
               <el-descriptions-item label="提交次数">{{ 888 }}</el-descriptions-item>
               <el-descriptions-item label="通过次数">{{ 888 }}</el-descriptions-item>
-              <el-descriptions-item label="难度"><DifficultyTag :difficulty="problem.difficulty"/></el-descriptions-item>
+              <el-descriptions-item label="来源">{{ problem.source }}</el-descriptions-item>
+              <el-descriptions-item label="难度"><DifficultyTag :difficulty="problem.difficulty" size="mini"/></el-descriptions-item>
             </el-descriptions>
           </div>
           <el-tag v-for="tag in problem.tags" :key="tag.id" style="margin-right: 10px;">{{ tag.name }}</el-tag>
-          <div class="problem-source" v-if="problem.source">
-            <span>来源: {{ problem.source }}</span>
-          </div>
         </div>
         <!-- 题目内容 -->
         <div class="problem-content">
-          <h3>题目描述</h3>
+          <h2>题目描述</h2>
           <markdown-renderer :content="problem.description"></markdown-renderer>
-          <h3>输入格式</h3>
+          <h2>输入格式</h2>
           <markdown-renderer :content="problem.inputDescription"></markdown-renderer>
-          <h3>输出格式</h3>
+          <h2>输出格式</h2>
           <markdown-renderer :content="problem.outputDescription"></markdown-renderer>
-          <h3>样例</h3>
+          <h2>样例</h2>
+          <el-row :gutter="20">
+
           <div v-for="(example, index) in problem.examples" :key="index">
-            <h4>样例 {{ index + 1 }}</h4>
-            <pre>输入: {{ example.input }}</pre>
-            <pre>输出: {{ example.output }}</pre>
+            <el-col :span="12">
+<!--              <span>输入 #{{index}}</span>-->
+              <pre>{{ example.input }}</pre>
+            </el-col>
+            <el-col :span="12">
+<!--              <span>输出 #{{index}}</span>-->
+              <pre>{{ example.output }}</pre>
+            </el-col>
           </div>
+          </el-row>
           <h3>提示</h3>
           <markdown-renderer :content="problem.hint"></markdown-renderer>
         </div>
@@ -149,7 +155,7 @@ export default {
       }
     },
     jump(url) {
-      this.$router.replace(url);
+      this.$router.push(url);
     },
     hasPermission(permission) {
       return this.userInfo.permissions.includes(permission);
@@ -171,7 +177,6 @@ export default {
 }
 
 .problem-info {
-  height: 20px;
   margin: 20px 0;
 }
 

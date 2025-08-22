@@ -1,5 +1,5 @@
 <template>
-  <el-tag :type="getDifficultyType(difficulty)">
+  <el-tag :type="getDifficultyType(difficulty)" :size="size">
     {{ getDifficultyLabel(difficulty) }}
   </el-tag>
 </template>
@@ -11,6 +11,10 @@ export default {
     difficulty: {
       type: Number,
       required: true
+    },
+    size: {
+      type: String,
+      default: 'default' // 'medium', 'small', 'mini'
     }
   },
   methods: {
