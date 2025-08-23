@@ -5,19 +5,16 @@
             <span>描述: {{ description }}</span> <br>
             <span>创建人: {{ createUser }}</span> <br>
             <span>创建时间: {{ createTime }}</span> <br>
-            <problemList :problems="problems" :show-tags="true"/>            
         </el-card>
     </div>
 </template>
 
 <script>
 import { getProblemSet } from '@/api/problemSet';
-import problemList from '../problem/components/problemList.vue';
 
 export default {
     name: 'ProblemSetInfoView',
     components: {
-        problemList,
     },
     data() {
         return {

@@ -5,18 +5,15 @@
       <h1 class="inline-title">{{ problem.problemId }}</h1>
       <h1 class="inline-title">{{ problem.title }}</h1>
       <el-button-group class="problem-action-btn">
-        <el-button v-if="hasPermission(permissions.PROBLEM_UPDATE)"
-                   type="primary" size="mini"
-                   @click="jump(`/problem/edit/${problem.id}`)">编辑题目
+        <el-button v-if="hasPermission(permissions.PROBLEM_UPDATE)" type="primary" size="mini"
+          @click="jump(`/problem/${problem.id}/edit`)">编辑题目
         </el-button>
-        <el-button v-if="hasPermission(permissions.PROBLEM_TAG_ADD)"
-                   type="primary" size="mini"
-                   @click="jump(`/problem/addTag/${problem.id}`)">修改标签
+        <el-button v-if="hasPermission(permissions.PROBLEM_TAG_ADD)" type="primary" size="mini"
+          @click="jump(`/problem/${problem.id}/add-tag`)">修改标签
         </el-button>
         <el-button
-            v-if="hasPermission(permissions.PROBLEM_ADD_TEST_CASE) && hasPermission(permissions.PROBLEM_DELETE_TEST_CASE)"
-            type="primary" size="mini"
-            @click="jump(`/problem/editTestCase/${problem.id}`)">测试数据
+          v-if="hasPermission(permissions.PROBLEM_ADD_TEST_CASE) && hasPermission(permissions.PROBLEM_DELETE_TEST_CASE)"
+          type="primary" size="mini" @click="jump(`/problem/${problem.id}/edit-test-case`)">测试数据
         </el-button>
       </el-button-group>
     </div>
@@ -29,43 +26,48 @@
             <el-descriptions :column="4" border size="mini">
               <el-descriptions-item label="时间限制">{{ problem.timeLimit / 1000 }}s</el-descriptions-item>
               <el-descriptions-item label="内存限制">{{ problem.memoryLimit }}MB</el-descriptions-item>
-              <el-descriptions-item label="创建者">{{ problem.createUser }}</el-descriptions-item>
               <el-descriptions-item label="提交次数">{{ 888 }}</el-descriptions-item>
               <el-descriptions-item label="通过次数">{{ 888 }}</el-descriptions-item>
+              <el-descriptions-item label="创建者">
+                <el-link type="">{{ problem.createUser }}</el-link>
+              </el-descriptions-item>
               <el-descriptions-item label="来源">{{ problem.source }}</el-descriptions-item>
-              <el-descriptions-item label="难度"><DifficultyTag :difficulty="problem.difficulty" size="mini"/></el-descriptions-item>
+              <el-descriptions-item label="难度">
+                <DifficultyTag :difficulty="problem.difficulty" size="mini" />
+              </el-descriptions-item>
             </el-descriptions>
           </div>
-          <el-tag v-for="tag in problem.tags" :key="tag.id" style="margin-right: 10px;">{{ tag.name }}</el-tag>
+          <el-tag v-for="tag in problem.tags" :key="tag.id" style="margin-right: 10px;">{{ tag }}</el-tag>
         </div>
         <!-- 题目内容 -->
         <div class="problem-content">
-          <h2>题目描述</h2>
+          <h1>题目描述</h1>
           <markdown-renderer :content="problem.description"></markdown-renderer>
-          <h2>输入格式</h2>
+          <h1>输入格式</h1>
           <markdown-renderer :content="problem.inputDescription"></markdown-renderer>
-          <h2>输出格式</h2>
+          <h1>输出格式</h1>
           <markdown-renderer :content="problem.outputDescription"></markdown-renderer>
-          <h2>样例</h2>
+          <h1>样例</h1>
           <el-row :gutter="20">
-
-          <div v-for="(example, index) in problem.examples" :key="index">
-            <el-col :span="12">
-<!--              <span>输入 #{{index}}</span>-->
-              <pre>{{ example.input }}</pre>
-            </el-col>
-            <el-col :span="12">
-<!--              <span>输出 #{{index}}</span>-->
-              <pre>{{ example.output }}</pre>
-            </el-col>
-          </div>
+            <div v-for="(example, index) in problem.samples" :key="index">
+              <el-col :span="12">
+                <span>输入 {{ index + 1 }}</span>
+                <el-button @click="copyToClipboard(example.input)" size="mini" style="margin-left: 20px;">复制</el-button>
+                <pre>{{ example.input }}</pre>
+              </el-col>
+              <el-col :span="12">
+                <span>输出 {{ index + 1 }}</span>
+                <el-button @click="copyToClipboard(example.output)" size="mini">复制</el-button>
+                <pre>{{ example.output }}</pre>
+              </el-col>
+            </div>
           </el-row>
-          <h3>提示</h3>
+          <h1>提示/说明</h1>
           <markdown-renderer :content="problem.hint"></markdown-renderer>
         </div>
 
       </el-col>
-      <el-col :span="12">
+      <el-col :span="12" class="right-panel">
         <!-- 提交代码 -->
         <div class="problem-submit">
           <el-select v-model="language" placeholder="请选择语言" size="mini">
@@ -76,7 +78,7 @@
         </div>
         <!-- 代码编辑器 -->
         <div class="code">
-          <code-editor v-model="code" :language="language" :height="600"/>
+          <code-editor v-model="code" :language="language" :height="800" />
         </div>
       </el-col>
     </el-row>
@@ -84,12 +86,12 @@
 </template>
 
 <script>
-import {getToken} from '@/utils/cookie'
-import {getProblemInfo} from '@/api/problem'
-import {submitCode} from '@/api/judge'
+import { getToken } from '@/utils/cookie'
+import { getProblemInfo } from '@/api/problem'
+import { submitCode } from '@/api/judge'
 import DifficultyTag from './components/DifficultyTag.vue'
-import {Permissions} from '@/config/permissions'
-import {mapState} from "vuex";
+import { Permissions } from '@/config/permissions'
+import { mapState } from "vuex";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
 
@@ -159,21 +161,38 @@ export default {
     },
     hasPermission(permission) {
       return this.userInfo.permissions.includes(permission);
+    },
+    copyToClipboard(text) {
+      navigator.clipboard.writeText(text).then(() => {
+        this.$message.success('复制成功');
+      }).catch(() => {
+        this.$message.error('复制失败');
+      });
     }
   }
 }
 </script>
 
 <style scoped>
+.right-panel{
+  /* padding: 20px; */
+  /* background-color: #f9f9f9; */
+  /* border-left: 1px solid #eee; */
+  position: fixed;
+  top: 100px;
+  bottom: 0;
+  right: 0;
+  /* overflow-y: auto; */
+}
 .inline-title {
   display: inline;
   margin: 0 5px 0;
 }
 
 .problem-action-btn {
-  float: right;
-  line-height: 40px;
-  margin-top: 3px;
+  /* float: right; */
+  line-height: 50px;
+  margin: 0 0 10px 350px;
 }
 
 .problem-info {

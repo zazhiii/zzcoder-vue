@@ -42,29 +42,27 @@ const routes = [
       },
       {
         path: 'problem',
-        component: () => import('@/views/problem/index.vue'),
-        children: [
-          {
-            path: 'add',
-            component: () => import('@/views/problem/admin/addProblemView.vue')
-          },
-        ]
+        component: () => import('@/views/problem/PageProblem.vue'),
+      },
+      {
+        path: 'problem/add',
+        component: () => import('@/views/problem/admin/AddProblem.vue')
       },
       {
         path: 'problem/:id',
         component: () => import('@/views/problem/ProblemView.vue')
       },
       {
-        path: 'problem/edit/:id',
+        path: 'problem/:problemId/edit',
         component: () => import('@/views/problem/admin/EditProblem.vue')
       },
       {
-        path: 'problem/editTestCase/:problemId',
+        path: 'problem/:problemId/edit-test-case',
         component: () => import('@/views/problem/admin/editTestCaseView.vue')
       },
       {
-        path: 'problem/addTag/:problemId',
-        component: () => import('@/views/problem/admin/addTagView.vue')
+        path: 'problem/:problemId/add-tag',
+        component: () => import('@/views/problem/admin/AddTag.vue')
       },
       {
         path: 'problem/judge-result/:problemId',

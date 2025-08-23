@@ -1,7 +1,7 @@
 <template>
   <div class="main-container">
     <el-container>
-      <el-header>
+      <el-header class="header">
         <el-menu router :default-active=this.$route.path mode="horizontal">
           <el-menu-item index="/home">首页</el-menu-item>
           <el-menu-item index="/problem">题库</el-menu-item>
@@ -25,7 +25,7 @@
           </div>
         </el-menu>
       </el-header>
-      <el-main>
+      <el-main class="main">
         <router-view/>
       </el-main>
     </el-container>
@@ -71,5 +71,15 @@ export default {
   float: right;
   margin-right: 20px;
   margin-top: 20px;
+}
+.header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 1000;
+}
+.main{
+  padding-top: 65px;
 }
 </style>

@@ -1,6 +1,6 @@
 <template>
   <div class="edit-problem-container">
-    <z-header :back-url="`/problem/${problemForm.id}`" title="编辑题目"></z-header>
+    <z-header :back-url="`/problem`" title="添加题目"></z-header>
     <el-form :model="problemForm" label-width="100px">
       <el-row :gutter="20">
         <el-col :span="12">
@@ -106,21 +106,9 @@
           </el-row>
         </el-tab-pane>
       </el-tabs>
-
-
-      <!-- 题目描述 -->
-
-
-      <!-- 输入描述 -->
-
-      <!--        &lt;!&ndash; 输出描述 &ndash;&gt;-->
-
-      <!--        &lt;!&ndash; 提示/说明 &ndash;&gt;-->
-
-      <!-- 提交 -->
       <el-form-item>
-        <el-button type="primary" @click="submitForm">保存修改</el-button>
-        <el-button @click="cancel">取消</el-button>
+        <el-button type="primary" @click="submitForm">保存</el-button>
+        <el-button type="primary" @click="submitForm">保存草稿</el-button>
       </el-form-item>
     </el-form>
 
@@ -129,13 +117,12 @@
 </template>
 
 <script>
-import {getProblemInfo, updateProblem} from '@/api/problem'
 import DifficultyOptions from "@/components/DifficultyOptions.vue";
 import ZHeader from "@/components/ZHeader.vue";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 
 export default {
-  name: 'EditProblemView',
+  name: 'AddProblem',
   components: {
     MarkdownRenderer, ZHeader, DifficultyOptions,
   },
@@ -159,24 +146,9 @@ export default {
     }
   },
   async mounted() {
-    await this.fetchProblem()
   },
   methods: {
-    async fetchProblem() {
-      this.problemForm = await getProblemInfo(this.$route.params.problemId)
-    },
-    async submitForm() {
-      try {
-        await updateProblem(this.problemForm)
-        this.$message.success('题目更新成功')
-        this.$router.push(`/problem/${this.problemForm.id}`)
-      } catch (error) {
-        this.$message.error('题目更新失败')
-      }
-    },
-    cancel() {
-      this.$router.push(`/problem/${this.problemForm.id}`)
-    }
+    
   }
 }
 </script>

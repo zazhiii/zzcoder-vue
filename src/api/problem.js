@@ -12,7 +12,7 @@ export function addProblem(data) {
 // 分页查询题目列表
 export function getProblemList(data) {
     return request({
-        url: '/problem/list',
+        url: '/problem/page',
         method: 'post',
         data
     })
@@ -137,4 +137,7 @@ export function deleteTestCase(id) {
     })
 }
 
+export function getProblemTags(problemId){
+    return request.get( `/problem/${problemId}/tags`)
+}
 
