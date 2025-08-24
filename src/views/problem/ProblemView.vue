@@ -67,19 +67,32 @@
         </div>
 
       </el-col>
-      <el-col :span="12" class="right-panel">
+      <el-col v-if="!submited" :span="12" class="right-panel">
         <!-- 提交代码 -->
         <div class="problem-submit">
           <el-select v-model="language" placeholder="请选择语言" size="mini">
             <el-option label="Java" value="java"></el-option>
           </el-select>
-          <el-button type="primary" :disabled="!isLogin" @click="submitProblem" size="mini">提交代码</el-button>
+          <el-button type="primary" :disabled="!isLogin" @click="submited=true" size="mini">提交代码</el-button>
           <div v-if="!isLogin" style="color: #F56C6C; font-size: 12px;">请登录之后再提交代码</div>
         </div>
         <!-- 代码编辑器 -->
         <div class="code">
           <code-editor v-model="code" :language="language" :height="800" />
         </div>
+      </el-col>
+      <el-col v-else :span="12">
+        <div class="test-header">
+          <el-button type="text" @click="submited=false" class="test-back">
+            <i class="el-icon-back"></i> 返回
+          </el-button>
+          <h1 class="test-title">测评中</h1>
+        </div>
+        <el-row :gutter="10">
+          <el-col :span="4" v-for="n in 6" :key="n">
+            <div class="test-case"></div>
+          </el-col>
+        </el-row>
       </el-col>
     </el-row>
   </div>
@@ -107,6 +120,7 @@ export default {
   },
   data() {
     return {
+      submited: true,
       problem: {
         id: '',
         problemId: '',
@@ -150,7 +164,6 @@ export default {
           language: this.language
         })
         this.$message.success('提交成功')
-        this.$router.push('/problem/judge-result/' + this.problem.id)
       } catch (error) {
         this.$message.error('提交失败，请稍后再试')
         console.log(error)
@@ -174,6 +187,30 @@ export default {
 </script>
 
 <style scoped>
+.test-header {
+  display: flex;
+  align-items: center; /* 垂直居中 */
+  position: relative; /* 方便绝对定位按钮 */
+  justify-content: center; /* 让标题在水平居中 */
+  margin-bottom: 20px; /* 底部留出空间 */
+}
+
+.test-header .test-title {
+  margin: 0;
+}
+
+.test-header .test-back {
+  position: absolute; /* 让返回按钮固定在左边 */
+  left: 0;
+}
+.test-case{
+  width: 100px;
+  height: 100px;
+  background-color: #f5f5f5;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  margin-bottom: 10px;
+}
 .right-panel{
   /* padding: 20px; */
   /* background-color: #f9f9f9; */

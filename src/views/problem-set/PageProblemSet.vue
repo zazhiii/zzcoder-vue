@@ -62,7 +62,8 @@
           </el-table-column>
           <el-table-column prop="status" label="状态">
             <template v-slot="scope">
-              <el-tag :type="scope.row.status === 1 ? 'success' : 'info'">公开</el-tag>
+              <el-tag v-if="scope.row.status === 1" type="success">公开</el-tag>
+              <el-tag v-else type="info">私有</el-tag>
             </template>
           </el-table-column>
         </el-table>
