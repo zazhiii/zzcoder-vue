@@ -57,7 +57,7 @@
               </el-col>
               <el-col :span="12">
                 <span>输出 {{ index + 1 }}</span>
-                <el-button @click="copyToClipboard(example.output)" size="mini">复制</el-button>
+                <el-button @click="copyToClipboard(example.output)" size="mini" style="margin-left: 20px;">复制</el-button>
                 <pre>{{ example.output }}</pre>
               </el-col>
             </div>

@@ -102,7 +102,7 @@ export default {
         tagId: [],
         difficulty: '',
         source: '',
-        problemVisible: true,
+        visible: true,
       },
       drawer: false,
       problems: [],
@@ -110,8 +110,8 @@ export default {
       showTags: true,
     }
   },
-  async created() {
-    await this.fetchProblems();
+  created() {
+    this.fetchProblems();
   },
   methods: {
     async fetchProblems() {

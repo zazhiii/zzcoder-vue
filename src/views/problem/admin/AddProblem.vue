@@ -5,44 +5,41 @@
       <el-row :gutter="20">
         <el-col :span="12">
           <el-form-item label="题目ID">
-            <el-input v-model="problemForm.problemId"></el-input>
+            <el-input v-model="problemForm.problemId" size="mini"></el-input>
           </el-form-item>
         </el-col>
         <el-col :span="12">
           <el-form-item label="题目标题">
-            <el-input v-model="problemForm.title"></el-input>
+            <el-input v-model="problemForm.title" size="mini"></el-input>
           </el-form-item>
         </el-col>
 
-        <el-col :span="4">
-          <el-form-item label="时间限制">
-            <el-input-number v-model="problemForm.timeLimit" :min="0" :step="100" controls-position="right">
-              <template slot="append">ms</template>
+        <el-col :span="5">
+          <el-form-item label="时间限制ms">
+            <el-input-number v-model="problemForm.timeLimit" :min="0" :step="500" controls-position="right" size="mini">
             </el-input-number>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="空间限制">
-            <el-input-number v-model="problemForm.memoryLimit" :min="0" :step="32" controls-position="right">
-              <template slot="append">MB</template>
+        <el-col :span="5">
+          <el-form-item label="空间限制MB">
+            <el-input-number v-model="problemForm.memoryLimit" :min="0" :step="128" controls-position="right" size="mini">
             </el-input-number>
           </el-form-item>
         </el-col>
-        <el-col :span="4">
-          <el-form-item label="栈限制">
-            <el-input-number v-model="problemForm.stackLimit" :min="0" :step="32" controls-position="right">
-              <template slot="append">MB</template>
-            </el-input-number>
-          </el-form-item>
-        </el-col>
+        <!--        <el-col :span="4">-->
+        <!--          <el-form-item label="栈限制MB">-->
+        <!--            <el-input-number v-model="problemForm.stackLimit" :min="0" :step="32" controls-position="right" size="mini">-->
+        <!--            </el-input-number>-->
+        <!--          </el-form-item>-->
+        <!--        </el-col>-->
         <el-col :span="4">
           <el-form-item label="题目难度">
-            <DifficultyOptions v-model="problemForm.difficulty"></DifficultyOptions>
+            <DifficultyOptions v-model="problemForm.difficulty" size="mini"></DifficultyOptions>
           </el-form-item>
         </el-col>
         <el-col :span="4">
           <el-form-item label="题目权限">
-            <el-select v-model="problemForm.status">
+            <el-select v-model="problemForm.status" size="mini">
               <el-option label="公开" value="0"></el-option>
               <el-option label="私有" value="1"></el-option>
               <el-option label="比赛中" value="3"></el-option>
@@ -51,7 +48,7 @@
         </el-col>
         <el-col :span="4">
           <el-form-item label="题目来源">
-            <el-input v-model="problemForm.source" placeholder="默认为zzcoder"></el-input>
+            <el-input v-model="problemForm.source" placeholder="默认为zzcoder" size="mini"></el-input>
           </el-form-item>
         </el-col>
 
@@ -106,9 +103,10 @@
           </el-row>
         </el-tab-pane>
       </el-tabs>
+      <!-- 提交 -->
       <el-form-item>
-        <el-button type="primary" @click="submitForm">保存</el-button>
-        <el-button type="primary" @click="submitForm">保存草稿</el-button>
+        <el-button type="primary" @click="submitForm">保存修改</el-button>
+        <el-button @click="cancel">取消</el-button>
       </el-form-item>
     </el-form>
 
