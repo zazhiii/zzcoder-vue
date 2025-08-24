@@ -16,7 +16,7 @@ export function updateProblemSet(data) {
     });
 }
 
-export function listPublicProblemSet(page = 1, size = 10, title) {
+export function pagePublicProblemSet(page = 1, size = 10, title) {
     return request({
         url: '/problem-set/public',
         method: 'get',
@@ -24,9 +24,9 @@ export function listPublicProblemSet(page = 1, size = 10, title) {
     });
 }
 
-export function listPrivateProblemSet() {
+export function listMyProblemSet() {
     return request({
-        url: '/problem-set/private',
+        url: '/problem-set/my',
         method: 'get'
     });
 }

@@ -120,7 +120,7 @@ export default {
             submissionId: 0,
             localQuery: {
                 currentPage: this.submissionQuery.currentPage || 1,
-                limit: this.submissionQuery.limit || 10,
+                pageSize: this.submissionQuery.pageSize || 10,
                 problemId: this.submissionQuery.problemId || '',
                 username: this.submissionQuery.username || '',
                 result: this.submissionQuery.result || '',

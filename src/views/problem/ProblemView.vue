@@ -89,7 +89,7 @@
 import { getToken } from '@/utils/cookie'
 import { getProblemInfo } from '@/api/problem'
 import { submitCode } from '@/api/judge'
-import DifficultyTag from './components/DifficultyTag.vue'
+import DifficultyTag from '../../components/DifficultyTag.vue'
 import { Permissions } from '@/config/permissions'
 import { mapState } from "vuex";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";

@@ -58,7 +58,7 @@ const routes = [
       },
       {
         path: 'problem/:problemId/edit-test-case',
-        component: () => import('@/views/problem/admin/editTestCaseView.vue')
+        component: () => import('@/views/problem/admin/EditTestCase.vue')
       },
       {
         path: 'problem/:problemId/add-tag',
@@ -74,13 +74,21 @@ const routes = [
       },
       {
         path: 'problem-set',
-        component: () => import('@/views/problem-set/index.vue'),
-        children: [
-          {
-            path: ':id',
-            component: () => import('@/views/problem-set/problemSetInfoView.vue'),
-          }
-        ]
+        component: () => import('@/views/problem-set/PageProblemSet.vue'),
+        // children: [
+        //   {
+        //     path: ':id',
+        //     component: () => import('@/views/problem-set/ProblemSet.vue'),
+        //   }
+        // ]
+      },
+      {
+        path: 'problem-set/add',
+        component: () => import('@/views/problem-set/AddProblemSet.vue')
+      },
+      {
+        path: 'problem-set/:problemSetId',
+        component: () => import('@/views/problem-set/ProblemSet.vue'),
       },
       {
         path: 'contest',

@@ -71,7 +71,7 @@
     <!-- 分页 -->
     <div class="pagination">
       <el-pagination @current-change="handleCurrentChange" @size-change="sizeChange"
-        :current-page="problemQueryDTO.currentPage" :page-sizes="[5, 15, 10, 20, 50]" :page-size="problemQueryDTO.limit"
+        :current-page="problemQueryDTO.currentPage" :page-sizes="[5, 15, 10, 20, 50]" :page-size="problemQueryDTO.pageSize"
         layout="prev, pager, next, jumper, sizes, ->, total" :total="problemQueryDTO.total">
       </el-pagination>
     </div>
@@ -82,7 +82,7 @@
 import { getAllTags, getProblemList } from '@/api/problem';
 import { mapState } from "vuex";
 import DifficultyOptions from "@/components/DifficultyOptions.vue"
-import DifficultyTag from './components/DifficultyTag.vue';
+import DifficultyTag from '../../components/DifficultyTag.vue';
 
 export default {
   name: 'ProblemListView',
