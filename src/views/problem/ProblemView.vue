@@ -57,7 +57,8 @@
               </el-col>
               <el-col :span="12">
                 <span>输出 {{ index + 1 }}</span>
-                <el-button @click="copyToClipboard(example.output)" size="mini" style="margin-left: 20px;">复制</el-button>
+                <el-button @click="copyToClipboard(example.output)" size="mini"
+                  style="margin-left: 20px;">复制</el-button>
                 <pre>{{ example.output }}</pre>
               </el-col>
             </div>
@@ -67,32 +68,58 @@
         </div>
 
       </el-col>
-      <el-col v-if="!submited" :span="12" class="right-panel">
-        <!-- 提交代码 -->
-        <div class="problem-submit">
-          <el-select v-model="language" placeholder="请选择语言" size="mini">
-            <el-option label="Java" value="java"></el-option>
-          </el-select>
-          <el-button type="primary" :disabled="!isLogin" @click="submited=true" size="mini">提交代码</el-button>
-          <div v-if="!isLogin" style="color: #F56C6C; font-size: 12px;">请登录之后再提交代码</div>
-        </div>
-        <!-- 代码编辑器 -->
-        <div class="code">
-          <code-editor v-model="code" :language="language" :height="800" />
-        </div>
-      </el-col>
-      <el-col v-else :span="12">
-        <div class="test-header">
-          <el-button type="text" @click="submited=false" class="test-back">
-            <i class="el-icon-back"></i> 返回
-          </el-button>
-          <h1 class="test-title">测评中</h1>
-        </div>
-        <el-row :gutter="10">
-          <el-col :span="4" v-for="n in 6" :key="n">
-            <div class="test-case"></div>
-          </el-col>
-        </el-row>
+      <el-col :span="12">
+        <el-tabs type="card" v-model="activeName" @tab-click="handleSwitch">
+          <el-tab-pane label="代码" name="code">
+            <div class="problem-submit">
+              <el-select v-model="language" placeholder="请选择语言" size="mini">
+                <el-option label="Java" value="java"></el-option>
+              </el-select>
+              <el-button type="primary" :disabled="!isLogin" @click="submit" size="mini">提交代码</el-button>
+              <div v-if="!isLogin" style="color: #F56C6C; font-size: 12px;">请登录之后再提交代码</div>
+            </div>
+            <code-editor v-model="code" :language="language" :height="800" />
+          </el-tab-pane>
+          <el-tab-pane label="提交记录" name="submission">
+            <div class="submission-list">
+              <el-table :data="submissions" style="width: 100%">
+                <el-table-column label="状态" :filters="statusFilters" width="115"
+                  :filter-method="(value, row) => row.status === value">
+                  <template v-slot="scope">
+                    <judge-status :status="scope.row.status" />
+                  </template>
+                </el-table-column>
+                <el-table-column prop="language" label="语言" width="115" :filters="languageFilters"
+                  :filter-method="(value, row) => row.language === value" />
+                <el-table-column prop="timeUsed" label="时间消耗">
+                  <template v-slot="scope">
+                    {{ scope.row.timeUsed }} ms
+                  </template>
+                </el-table-column>
+                <el-table-column prop="memoryUsed" label="内存消耗">
+                  <template v-slot="scope">
+                    {{ Math.round(scope.row.memoryUsed / 1024 * 100) / 100 }} MB
+                  </template>
+                </el-table-column>
+                <el-table-column label="提交时间">
+                  <template v-slot="scope">
+                    {{ new Date(scope.row.submitTime).toLocaleString('zh-CN') }}
+                  </template>
+                </el-table-column>
+              </el-table>
+            </div>
+          </el-tab-pane>
+          <el-tab-pane label="结果" name="result" closable>
+            <div class="test-header">
+              <h1 class="test-title">测评中</h1>
+            </div>
+            <el-row :gutter="10">
+              <el-col :span="4" v-for="n in 6" :key="n">
+                <div class="test-case"></div>
+              </el-col>
+            </el-row>
+          </el-tab-pane>
+        </el-tabs>
       </el-col>
     </el-row>
   </div>
@@ -107,11 +134,14 @@ import { Permissions } from '@/config/permissions'
 import { mapState } from "vuex";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
+import JudgeStatus from "@/components/JudgeStatus.vue";
+import { getUserProblemSubmissions } from '@/api/judge'
 
 export default {
   name: 'ProblemView',
   components: {
     CodeEditor,
+    JudgeStatus,
     MarkdownRenderer,
     DifficultyTag,
   },
@@ -120,7 +150,7 @@ export default {
   },
   data() {
     return {
-      submited: true,
+      activeName: 'code',
       problem: {
         id: '',
         problemId: '',
@@ -136,34 +166,54 @@ export default {
         difficulty: 0,
         createUser: '',
         source: '',
-        tags: []
+        tags: [],
       },
       language: 'Java',
       code: '',
       token: getToken(),
-      theme: "vs-dark",
-      editorOptions: {
-        fontSize: 16,
-      },
+      submissions: [],
+      languageFilters: [{ text: 'C', value: 'C' }, { text: 'C++', value: 'C++' }, { text: 'Java', value: 'Java' }],
+      statusFilters: [
+        { text: '等待中', value: 'PENDING' },
+        { text: '评测中', value: 'JUDGING' },
+        { text: '答案正确', value: 'AC' },
+        { text: '错误答案', value: 'WA' },
+        { text: '超出时间限制', value: 'TLE' },
+        { text: '超出内存限制', value: 'MLE' },
+        { text: '运行错误', value: 'RE' },
+        { text: '编译错误', value: 'CE' },
+        { text: '系统错误', value: 'SE' }
+      ],
       permissions: Permissions
     }
   },
-  async mounted() {
-    await this.fetchProblem();
+  mounted() {
+    this.fetchProblem();
   },
   methods: {
+    handleSwitch(tab) {
+      if (tab.name === 'submission') {
+        this.fetchSubmissions();
+      } else if (tab.name === 'result') {
+        console.log('show result'); // TODO
+      }
+    },
     async fetchProblem() {
       this.problem = await getProblemInfo(this.$route.params.id);
     },
-    async submitProblem() {
+    async fetchSubmissions() {
+      this.submissions = await getUserProblemSubmissions(this.$route.params.id);
+    },
+    async submit() {
       try {
         await submitCode({
-          userId: this.userInfo.id,
           problemId: this.$route.params.id,
           code: this.code,
-          language: this.language
+          language: this.language,
+          fullJudge: true
         })
         this.$message.success('提交成功')
+        this.activeName = 'submission'// TODO
       } catch (error) {
         this.$message.error('提交失败，请稍后再试')
         console.log(error)
@@ -189,10 +239,14 @@ export default {
 <style scoped>
 .test-header {
   display: flex;
-  align-items: center; /* 垂直居中 */
-  position: relative; /* 方便绝对定位按钮 */
-  justify-content: center; /* 让标题在水平居中 */
-  margin-bottom: 20px; /* 底部留出空间 */
+  align-items: center;
+  /* 垂直居中 */
+  position: relative;
+  /* 方便绝对定位按钮 */
+  justify-content: center;
+  /* 让标题在水平居中 */
+  margin-bottom: 20px;
+  /* 底部留出空间 */
 }
 
 .test-header .test-title {
@@ -200,10 +254,12 @@ export default {
 }
 
 .test-header .test-back {
-  position: absolute; /* 让返回按钮固定在左边 */
+  position: absolute;
+  /* 让返回按钮固定在左边 */
   left: 0;
 }
-.test-case{
+
+.test-case {
   width: 100px;
   height: 100px;
   background-color: #f5f5f5;
@@ -211,7 +267,8 @@ export default {
   border-radius: 4px;
   margin-bottom: 10px;
 }
-.right-panel{
+
+.right-panel {
   /* padding: 20px; */
   /* background-color: #f9f9f9; */
   /* border-left: 1px solid #eee; */
@@ -221,16 +278,12 @@ export default {
   right: 0;
   /* overflow-y: auto; */
 }
+
 .inline-title {
   display: inline;
   margin: 0 5px 0;
 }
 
-.problem-action-btn {
-  /* float: right; */
-  line-height: 50px;
-  margin: 0 0 10px 350px;
-}
 
 .problem-info {
   margin: 20px 0;
@@ -264,7 +317,6 @@ export default {
 }
 
 .problem-submit {
-  margin-top: 20px;
   text-align: right;
 }
 </style>
