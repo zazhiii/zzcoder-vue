@@ -205,19 +205,25 @@ export default {
       this.submissions = await getUserProblemSubmissions(this.$route.params.id);
     },
     async submit() {
-      try {
-        await submitCode({
-          problemId: this.$route.params.id,
-          code: this.code,
-          language: this.language,
-          fullJudge: true
-        })
-        this.$message.success('提交成功')
-        this.activeName = 'submission'// TODO
-      } catch (error) {
-        this.$message.error('提交失败，请稍后再试')
-        console.log(error)
-      }
+      const submisionId = await submitCode({
+        problemId: this.$route.params.id,
+        code: this.code,
+        language: this.language,
+        fullJudge: true
+      })
+      this.$message.success('提交成功')
+      this.activeName = 'result'
+
+      const eventSource = new EventSource(`http://localhost:8080/api/judge/subscribe/${submisionId}`);
+      eventSource.addEventListener("status", (event) => {
+        this.$message.info(`评测状态更新: ${event.data}`);
+      })
+
+      const eventSource2 = new EventSource(`http://localhost:8080/api/judge/subscribe/${submisionId}`);
+      eventSource2.addEventListener("status", (event) => {
+        this.$message.info(`评测状态更新: ${event.data}`);
+      })
+
     },
     jump(url) {
       this.$router.push(url);
