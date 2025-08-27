@@ -111,11 +111,23 @@
           </el-tab-pane>
           <el-tab-pane label="结果" name="result" closable>
             <div class="test-header">
-              <h1 class="test-title">测评中</h1>
+              <h1 class="test-title">{{ judgeResult.status }}</h1>
             </div>
             <el-row :gutter="10">
-              <el-col :span="4" v-for="n in 6" :key="n">
-                <div class="test-case"></div>
+              <el-col :span="4" v-for="(item, key, index) in judgeResult.testCaseStatus" :key="key">
+                <!-- 
+                {
+                  12: { status: 'AC', timeUsed: 100, memoryUsed: 256 },
+                  15: { status: 'WA', timeUsed: 200, memoryUsed: 512 }
+                }
+                -->
+                <!-- <div class="test-case">
+                  <div class="test-case-id"># {{ index + 1 }}</div>
+                  <div class="test-case-status">{{ item.status }}</div>
+                  <div class="test-case-time">{{ item.timeUsed }} ms</div>
+                  <div class="test-case-memory">{{ Math.round(item.memoryUsed / 1024 * 100) / 100 }} MB</div>
+                </div> -->
+                <TestCaseResult :index="index + 1" :item="item" />
               </el-col>
             </el-row>
           </el-tab-pane>
@@ -135,7 +147,8 @@ import { mapState } from "vuex";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
 import JudgeStatus from "@/components/JudgeStatus.vue";
-import { getUserProblemSubmissions } from '@/api/judge'
+import TestCaseResult from '@/components/TestCaseResult.vue'
+import { getUserProblemSubmissions, getTestCaseIds } from '@/api/judge'
 
 export default {
   name: 'ProblemView',
@@ -144,6 +157,7 @@ export default {
     JudgeStatus,
     MarkdownRenderer,
     DifficultyTag,
+    TestCaseResult
   },
   computed: {
     ...mapState('user', ['userInfo', 'isLogin'])
@@ -184,7 +198,11 @@ export default {
         { text: '编译错误', value: 'CE' },
         { text: '系统错误', value: 'SE' }
       ],
-      permissions: Permissions
+      permissions: Permissions,
+      judgeResult: {
+        status: 'PENDING',
+        testCaseStatus: {}
+      }
     }
   },
   mounted() {
@@ -213,17 +231,24 @@ export default {
       })
       this.$message.success('提交成功')
       this.activeName = 'result'
+      // 查询出所有的测试用例id
+      const testCaseIds = await getTestCaseIds(this.$route.params.id);
+      this.judgeResult.testCaseStatus = testCaseIds.reduce((acc, id) => {
+        acc[id] = { status: 'PENDING' };
+        return acc;
+      }, {});
+      this.judgeResult.status = 'PENDING';
 
       const eventSource = new EventSource(`http://localhost:8080/api/judge/subscribe/${submisionId}`);
       eventSource.addEventListener("status", (event) => {
-        this.$message.info(`评测状态更新: ${event.data}`);
+        this.judgeResult.status = event.data;
       })
 
-      const eventSource2 = new EventSource(`http://localhost:8080/api/judge/subscribe/${submisionId}`);
-      eventSource2.addEventListener("status", (event) => {
-        this.$message.info(`评测状态更新: ${event.data}`);
+      eventSource.addEventListener("testCaseUpdate", (event) => {
+        const testCaseResult = JSON.parse(event.data)
+        const { testCaseId, status, timeUsed, memoryUsed } = testCaseResult;
+        this.judgeResult.testCaseStatus[testCaseId] = { status, timeUsed, memoryUsed };
       })
-
     },
     jump(url) {
       this.$router.push(url);

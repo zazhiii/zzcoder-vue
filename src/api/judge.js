@@ -9,6 +9,10 @@ export function submitCode(judgeDTO) {
     })
 }
 
-export function getUserProblemSubmissions(problemId){
+export function getUserProblemSubmissions(problemId) {
     return _axios.get(`/judge/submission/user/${problemId}`)
+}
+
+export function getTestCaseIds(problemId) {
+    return _axios.get(`/judge/test-case-ids/${problemId}`)
 }
