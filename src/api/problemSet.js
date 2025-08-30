@@ -1,64 +1,60 @@
-import request from '@/utils/request'
+import _axios from '@/utils/request';
 
+export function pageProblemSet({title, page = 1, pageSize = 10, status}) {
+    return _axios({
+      url: '/problem-set/page',
+      method: 'get',
+      params: { title, page, pageSize, status }
+    })
+}
+
+// 获取题单详情
+export function getProblemSetDetail(id) {
+  return _axios({
+    url: `/problem-set/${id}`,
+    method: 'get'
+  });
+}
+
+// 创建题单
 export function addProblemSet(data) {
-    return request({
-        url: '/problem-set',
-        method: 'post',
-        data
-    });
+  return _axios({
+    url: '/problem-set',
+    method: 'post',
+    data
+  });
 }
 
-export function updateProblemSet(data) {
-    return request({
-        url: '/problem-set',
-        method: 'put',
-        data
-    });
+// 更新题单
+export function updateProblemSet(id, data) {
+  return _axios({
+    url: `/problem-set/${id}`,
+    method: 'put',
+    data
+  });
 }
 
-export function pagePublicProblemSet(page = 1, size = 10, title) {
-    return request({
-        url: '/problem-set/public',
-        method: 'get',
-        params: { page, size, title }
-    });
-}
-
-export function listMyProblemSet() {
-    return request({
-        url: '/problem-set/my',
-        method: 'get'
-    });
-}
-
-export function addProblemToProblemSet(problemSetId, problemId) {
-    return request({
-        url: '/problem-set/add-problem',
-        method: 'post',
-        params: { problemSetId, problemId }
-    });
-}
-
-export function deleteProblemFromProblemSet(problemSetId, problemId) {
-    return request({
-        url: '/problem-set/delete-problem',
-        method: 'delete',
-        params: { problemSetId, problemId }
-    });
-}
-
-export function getProblemSet(id) {
-    return request({
-        url: `/problem-set/${id}`,
-        method: 'get'
-    });
-}
-
+// 删除题单
 export function deleteProblemSet(id) {
-    return request({
-        url: `/problem-set/${id}`,
-        method: 'delete'
-    });
+  return _axios({
+    url: `/problem-set/${id}`,
+    method: 'delete'
+  });
 }
 
+// 向题单添加题目
+export function addProblemToProblemSet(problemSetId, data) {
+  return _axios({
+    url: `/problemSet/${problemSetId}/problems`,
+    method: 'post',
+    data
+  });
+}
 
+// 从题单移除题目
+export function removeProblemFromProblemSet(problemSetId, problemId) {
+  return _axios({
+    url: `/problemSet/${problemSetId}/problems/${problemId}`,
+    method: 'delete'
+  });
+}

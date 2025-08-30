@@ -47,7 +47,7 @@
     </div>
     <!-- 题目列表 -->
     <el-table :data="problems" style="width: 100%">
-      <el-table-column prop="problemId" label="题号" width="80"></el-table-column>
+      <el-table-column prop="problemNumber" label="题号" width="80"></el-table-column>
       <el-table-column prop="title" label="标题">
         <template slot-scope="scope">
           <el-link type="primary" @click="jump(`/problem/${scope.row.id}`)">

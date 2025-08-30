@@ -75,12 +75,21 @@ const routes = [
       {
         path: 'problem-set',
         component: () => import('@/views/problem-set/PageProblemSet.vue'),
-        // children: [
-        //   {
-        //     path: ':id',
-        //     component: () => import('@/views/problem-set/ProblemSet.vue'),
-        //   }
-        // ]
+        // redirect: '/problem-set/public',
+        children: [
+          // {
+          //   path: 'public',
+          //   component: () => import('@/views/problem-set/PublicProblemSet.vue'),
+          // },
+          // {
+          //   path: 'my',
+          //   component: () => import('@/views/problem-set/MyProblemSet.vue'),
+          // },
+          // {
+          //   path: ":problemSetId",
+          //   component: () => import('@/views/problem-set/ProblemSet.vue'),
+          // }
+        ]
       },
       {
         path: 'problem-set/add',
@@ -91,25 +100,21 @@ const routes = [
         component: () => import('@/views/problem-set/ProblemSet.vue'),
       },
       {
+        path: 'problem-set/edit/:problemSetId',
+        component: () => import('@/views/problem-set/EditProblemSet.vue'),
+      },
+      {
         path: 'contest',
         component: () => import('@/views/contest/index.vue'),
-        redirect: 'contest/list',
-        children: [
-          {
-            path: 'list',
-            component: () => import('@/views/contest/contestListView.vue'),
-          },
-          {
-            path: 'create',
-            component: () => import('@/views/contest/createContestView.vue')
-          },
-          {
-            path: ':id',
-            component: () => import('@/views/contest/contestInfoView.vue'),
-          }
-        ]
       },
-
+      {
+        path: 'contest/create',
+        component: () => import('@/views/contest/createContestView.vue')
+      },
+      {
+        path: 'contest:contestId',
+        component: () => import('@/views/contest/contestInfoView.vue'),
+      }
     ]
   },
 ]
