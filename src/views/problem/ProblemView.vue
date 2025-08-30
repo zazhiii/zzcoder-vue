@@ -18,8 +18,8 @@
       </el-button-group>
     </div>
     <!-- main -->
-    <el-row :gutter="20">
-      <el-col :span="12">
+    <el-row :gutter="20" class="page-container">
+      <el-col :span="12" style="height: calc(100vh - 140px); overflow-y: auto;" class="left-col">
         <!-- 题目信息 -->
         <div class="problem-info">
           <div class="problem-limits">
@@ -78,55 +78,47 @@
               <el-button type="primary" :disabled="!isLogin" @click="submit" size="mini">提交代码</el-button>
               <div v-if="!isLogin" style="color: #F56C6C; font-size: 12px;">请登录之后再提交代码</div>
             </div>
-            <code-editor v-model="code" :language="language" :height="800" />
+            <code-editor v-model="code" :language="language" :height="600" />
           </el-tab-pane>
           <el-tab-pane label="提交记录" name="submission">
-            <div class="submission-list">
-              <el-table :data="submissions" style="width: 100%">
-                <el-table-column label="状态" :filters="statusFilters" width="115"
-                  :filter-method="(value, row) => row.status === value">
-                  <template v-slot="scope">
-                    <judge-status :status="scope.row.status" />
-                  </template>
-                </el-table-column>
-                <el-table-column prop="language" label="语言" width="115" :filters="languageFilters"
-                  :filter-method="(value, row) => row.language === value" />
-                <el-table-column prop="timeUsed" label="时间消耗">
-                  <template v-slot="scope">
-                    {{ scope.row.timeUsed }} ms
-                  </template>
-                </el-table-column>
-                <el-table-column prop="memoryUsed" label="内存消耗">
-                  <template v-slot="scope">
-                    {{ Math.round(scope.row.memoryUsed / 1024 * 100) / 100 }} MB
-                  </template>
-                </el-table-column>
-                <el-table-column label="提交时间">
-                  <template v-slot="scope">
-                    {{ new Date(scope.row.submitTime).toLocaleString('zh-CN') }}
-                  </template>
-                </el-table-column>
-              </el-table>
-            </div>
+            <el-table :data="submissions" style="width: 100%">
+              <el-table-column label="状态" :filters="elTableFilters.STATUS_FILTER" width="115"
+                :filter-method="(value, row) => row.status === value">
+                <template v-slot="scope">
+                  <judge-status :status="scope.row.status" />
+                </template>
+              </el-table-column>
+              <el-table-column prop="language" label="语言" width="115" :filters="elTableFilters.LANGUAGE_FILTER"
+                :filter-method="(value, row) => row.language === value" />
+              <el-table-column prop="timeUsed" label="时间消耗">
+                <template v-slot="scope">
+                  {{ scope.row.timeUsed }} ms
+                </template>
+              </el-table-column>
+              <el-table-column prop="memoryUsed" label="内存消耗">
+                <template v-slot="scope">
+                  {{ Math.round(scope.row.memoryUsed / 1024 * 100) / 100 }} MB
+                </template>
+              </el-table-column>
+              <el-table-column label="提交时间">
+                <template v-slot="scope">
+                  {{ new Date(scope.row.submitTime).toLocaleString('zh-CN') }}
+                </template>
+              </el-table-column>
+            </el-table>
+            <el-pagination small layout="prev, pager, next" :total="total" :page-size="submissionPageForm.pageSize"
+              style="margin-top: 20px; text-align: right;" @current-change="(page) => {
+                submissionPageForm.page = page;
+                fetchSubmissions();
+              }">
+            </el-pagination>
           </el-tab-pane>
-          <el-tab-pane label="结果" name="result" closable>
+          <el-tab-pane label="结果" name="result" v-if="judgeResult">
             <div class="test-header">
               <h1 class="test-title">{{ judgeResult.status }}</h1>
             </div>
             <el-row :gutter="10">
               <el-col :span="4" v-for="(item, key, index) in judgeResult.testCaseStatus" :key="key">
-                <!-- 
-                {
-                  12: { status: 'AC', timeUsed: 100, memoryUsed: 256 },
-                  15: { status: 'WA', timeUsed: 200, memoryUsed: 512 }
-                }
-                -->
-                <!-- <div class="test-case">
-                  <div class="test-case-id"># {{ index + 1 }}</div>
-                  <div class="test-case-status">{{ item.status }}</div>
-                  <div class="test-case-time">{{ item.timeUsed }} ms</div>
-                  <div class="test-case-memory">{{ Math.round(item.memoryUsed / 1024 * 100) / 100 }} MB</div>
-                </div> -->
                 <TestCaseResult :index="index + 1" :item="item" />
               </el-col>
             </el-row>
@@ -142,13 +134,14 @@ import { getToken } from '@/utils/cookie'
 import { getProblemInfo } from '@/api/problem'
 import { submitCode } from '@/api/judge'
 import DifficultyTag from '../../components/DifficultyTag.vue'
-import { Permissions } from '@/config/permissions'
+import { permissions } from '@/config/permissions'
 import { mapState } from "vuex";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 import CodeEditor from "@/components/CodeEditor.vue";
 import JudgeStatus from "@/components/JudgeStatus.vue";
 import TestCaseResult from '@/components/TestCaseResult.vue'
-import { getUserProblemSubmissions, getTestCaseIds } from '@/api/judge'
+import { pageSubmission, getTestCaseIds } from '@/api/judge'
+import { elTableFilters } from '@/config/filters'
 
 export default {
   name: 'ProblemView',
@@ -164,7 +157,10 @@ export default {
   },
   data() {
     return {
+      token: getToken(),
       activeName: 'code',
+      permissions: permissions,
+      // 题目信息
       problem: {
         id: '',
         problemId: '',
@@ -184,28 +180,22 @@ export default {
       },
       language: 'Java',
       code: '',
-      token: getToken(),
+      // 提交记录
       submissions: [],
-      languageFilters: [{ text: 'C', value: 'C' }, { text: 'C++', value: 'C++' }, { text: 'Java', value: 'Java' }],
-      statusFilters: [
-        { text: '等待中', value: 'PENDING' },
-        { text: '评测中', value: 'JUDGING' },
-        { text: '答案正确', value: 'AC' },
-        { text: '错误答案', value: 'WA' },
-        { text: '超出时间限制', value: 'TLE' },
-        { text: '超出内存限制', value: 'MLE' },
-        { text: '运行错误', value: 'RE' },
-        { text: '编译错误', value: 'CE' },
-        { text: '系统错误', value: 'SE' }
-      ],
-      permissions: Permissions,
-      judgeResult: {
-        status: 'PENDING',
-        testCaseStatus: {}
-      }
+      submissionPageForm: {
+        page: 1,
+        pageSize: 10,
+        username: '',
+        problemId: this.$route.params.problemId
+      },
+      total: 0,
+      elTableFilters: elTableFilters,
+      // 测评结果
+      judgeResult: null,
+      connectingSource: null
     }
   },
-  mounted() {
+  created() {
     this.fetchProblem();
   },
   methods: {
@@ -217,29 +207,41 @@ export default {
       }
     },
     async fetchProblem() {
-      this.problem = await getProblemInfo(this.$route.params.id);
+      this.problem = await getProblemInfo(this.$route.params.problemId);
     },
     async fetchSubmissions() {
-      this.submissions = await getUserProblemSubmissions(this.$route.params.id);
+      this.submissionPageForm.username = this.userInfo.username;
+      const res = await pageSubmission(this.submissionPageForm);
+      this.submissions = res.records;
+      this.total = res.total;
     },
     async submit() {
       const submisionId = await submitCode({
-        problemId: this.$route.params.id,
+        problemId: this.$route.params.problemId,
         code: this.code,
         language: this.language,
         fullJudge: true
       })
       this.$message.success('提交成功')
+      this.judgeResult = {
+        status: 'PENDING',
+        testCaseStatus: {}
+      }
       this.activeName = 'result'
       // 查询出所有的测试用例id
-      const testCaseIds = await getTestCaseIds(this.$route.params.id);
+      const testCaseIds = await getTestCaseIds(this.$route.params.problemId);
       this.judgeResult.testCaseStatus = testCaseIds.reduce((acc, id) => {
         acc[id] = { status: 'PENDING' };
         return acc;
       }, {});
       this.judgeResult.status = 'PENDING';
 
+      if (this.connectingSource) {
+        this.connectingSource.close();
+      }
+
       const eventSource = new EventSource(`http://localhost:8080/api/judge/subscribe/${submisionId}`);
+      this.connectingSource = eventSource;
       eventSource.addEventListener("status", (event) => {
         this.judgeResult.status = event.data;
       })
@@ -268,6 +270,25 @@ export default {
 </script>
 
 <style scoped>
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.left-col {
+  height: 100%;
+  overflow-y: auto;
+}
+
+.page-container {
+  display: flex;
+  height: 83vh;
+  overflow: hidden;
+  /* 禁止外层滚动 */
+}
+
 .test-header {
   display: flex;
   align-items: center;

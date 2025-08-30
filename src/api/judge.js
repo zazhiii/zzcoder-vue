@@ -16,3 +16,7 @@ export function getUserProblemSubmissions(problemId) {
 export function getTestCaseIds(problemId) {
     return _axios.get(`/judge/test-case-ids/${problemId}`)
 }
+
+export function pageSubmission(form) {
+    return _axios.get('/judge/submission/page', { params: form })
+}

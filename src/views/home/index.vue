@@ -42,10 +42,6 @@
                 <el-avatar :src="userInfo.avatarUrl" :size="64"></el-avatar>
                 <h2>{{ userInfo.username }}</h2>
               </div>
-              <!-- <div class="user-rank">
-                  <el-tag :type="getRankType(userInfo.rank)">{{ userInfo.rank }}</el-tag>
-                  <span class="rating">Rating: {{ userInfo.rating }}</span>
-              </div> -->
               <div class="user-stats">
                 <div class="stat-item">
                   <span class="stat-label">已解决题目</span>
@@ -55,10 +51,6 @@
                   <span class="stat-label">提交次数</span>
                   <span class="stat-value"> 0 </span> <!--TODO-->
                 </div>
-                <!-- <div class="stat-item">
-                    <span class="stat-label">通过率</span>
-                    <span class="stat-value">{{ calculatePassRate }}%</span>
-                </div> -->
               </div>
             </div>
           </div>
@@ -80,8 +72,7 @@
         <el-card class="recent-submissions" v-if="userInfo.username">
           <div slot="header">
             <span>最近提交</span>
-            <el-button style="float: right; padding: 3px 0" type="text"
-                       @click="$router.push('/submissions')">
+            <el-button style="float: right; padding: 3px 0" type="text" @click="$router.push('/submissions')">
               查看更多
             </el-button>
           </div>
@@ -121,7 +112,7 @@
         <el-checkbox label="atcoder"></el-checkbox>
       </el-checkbox-group>
       <el-table :data="upcomingContests" v-loading="upcomingTableLoading">
-        <el-table-column prop="event" label="竞赛名称" width="500">
+        <el-table-column prop="event" label="竞赛名称" width="450">
           <template #default="scope">
             <el-link :href="scope.row.href" target="_blank" type="primary">{{ scope.row.event }}</el-link>
           </template>
@@ -158,8 +149,8 @@
           <template #default="scope">
             <!-- target="_blank": 在新标签页中打开 -->
             <el-link :href="`https://${scope.row.resource}`" target="_blank" type="success">{{
-                scope.row.resource
-              }}
+              scope.row.resource
+            }}
             </el-link>
           </template>
         </el-table-column>
@@ -169,8 +160,8 @@
 </template>
 
 <script>
-import {getUpcomingContestsFromClist} from '@/api/contest';
-import {mapState} from "vuex";
+import { getUpcomingContestsFromClist } from '@/api/contest';
+import { mapState } from "vuex";
 
 export default {
   name: 'HomePage',
@@ -262,61 +253,6 @@ export default {
         '困难': 'danger'
       }
       return difficultyMap[difficulty] || 'info'
-    },
-    async fetchStats() {
-      // TODO: 调用获取统计数据的API
-      this.stats = {
-        problemCount: 100,
-        problemSetCount: 10,
-        ongoingContests: 2,
-        problemPassRate: 65,
-        hotTags: ['动态规划', '贪心', '图论']
-      }
-    },
-    async fetchRecentSubmissions() {
-      // TODO: 调用获取最近提交记录的API
-      this.recentSubmissions = [
-        {
-          problemId: 1,
-          problemTitle: "A+B问题",
-          submitTime: new Date(),
-          status: "AC",
-          language: "C++"
-        }
-      ]
-    },
-    async fetchLeaderboard() {
-      // TODO: 调用获取排行榜数据的API
-      this.leaderboardData = [
-        {
-          userId: 1,
-          username: "user1",
-          rating: 2000,
-          rank: "王者",
-          solved: 100
-        }
-      ]
-    },
-    async fetchHotProblems() {
-      // TODO: 调用获取热门题目的API
-      this.hotProblems = [
-        {
-          id: 1,
-          title: "两数之和",
-          difficulty: "简单",
-          passRate: 75
-        }
-      ]
-    },
-    async fetchActivities() {
-      // TODO: 调用获取最新动态的API
-      this.activities = [
-        {
-          time: "2023-06-20",
-          title: "周赛预告",
-          content: "第100场周赛将于本周日举行"
-        }
-      ]
     }
   }
 }

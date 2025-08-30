@@ -49,7 +49,7 @@ const routes = [
         component: () => import('@/views/problem/admin/AddProblem.vue')
       },
       {
-        path: 'problem/:id',
+        path: 'problem/:problemId',
         component: () => import('@/views/problem/ProblemView.vue')
       },
       {
