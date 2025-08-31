@@ -7,7 +7,7 @@
                 </el-tab-pane>
                 <el-tab-pane label="提交记录">
                     <Submissions :submissionQuery="{
-                        username: username,
+                        username: userInfo.username,
                     }" />
                 </el-tab-pane>
                 <el-tab-pane label="设置">
@@ -20,6 +20,7 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
 import Profile from './components/Profile';
 import Settings from './components/Settings';
 import Submissions from '@/views/judge/components/Submissions';
@@ -31,10 +32,8 @@ export default {
         Submissions,
         Settings
     },
-    data() {
-        return {
-            username: this.$store.user.state.username
-        }
-    }
+    computed: {
+        ...mapState('user', ['userInfo'])
+    },
 }
 </script>

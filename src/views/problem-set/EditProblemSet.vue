@@ -13,11 +13,7 @@
               <el-row :gutter="20">
                 <el-col :span="12">
                   <el-form-item label="题单标题" prop="title">
-                    <el-input
-                        v-model="problemSetForm.title"
-                        placeholder="请输入题单标题"
-                        size="small"
-                    ></el-input>
+                    <el-input v-model="problemSetForm.title" placeholder="请输入题单标题" size="small"></el-input>
                   </el-form-item>
                 </el-col>
                 <el-col :span="12">
@@ -35,11 +31,7 @@
             <div class="form-section">
               <h3 class="section-title">题单描述</h3>
               <div class="description-section">
-                <markdown-editor
-                    v-model="problemSetForm.description"
-                    :height="500"
-                    @change="onDescriptionChange"
-                />
+                <markdown-editor v-model="problemSetForm.description" :height="500" @change="onDescriptionChange" />
               </div>
             </div>
 
@@ -66,13 +58,8 @@
                 <div class="add-form">
                   <el-row :gutter="20">
                     <el-col :span="8">
-                      <el-input
-                          v-model="searchForm.localProblemId"
-                          placeholder="输入题目ID或名称搜索"
-                          size="small"
-                          clearable
-                          @keyup.enter.native="searchLocalProblems"
-                      />
+                      <el-input v-model="searchForm.keyword" placeholder="输入题目编号或名称搜索" size="small" clearable
+                        @keyup.enter.native="searchLocalProblems" />
                     </el-col>
                     <el-col :span="4">
                       <el-button type="primary" size="small" @click="searchLocalProblems">
@@ -83,12 +70,7 @@
 
                   <!-- 搜索结果 -->
                   <div v-if="searchResults.length > 0" class="search-results">
-                    <el-table
-                        :data="searchResults"
-                        size="small"
-                        max-height="300"
-                        style="margin-top: 15px;"
-                    >
+                    <el-table :data="searchResults" size="small" max-height="300" style="margin-top: 15px;">
                       <el-table-column prop="id" label="ID" width="80"></el-table-column>
                       <el-table-column prop="title" label="题目名称" min-width="200"></el-table-column>
                       <el-table-column label="难度" width="100" align="center">
@@ -98,12 +80,8 @@
                       </el-table-column>
                       <el-table-column label="操作" width="100" align="center">
                         <template #default="scope">
-                          <el-button
-                              type="text"
-                              size="small"
-                              @click="addLocalProblem(scope.row)"
-                              :disabled="isLocalProblemAdded(scope.row.id)"
-                          >
+                          <el-button type="text" size="small" @click="addLocalProblem(scope.row)"
+                            :disabled="isLocalProblemAdded(scope.row.id)">
                             {{ isLocalProblemAdded(scope.row.id) ? '已添加' : '添加' }}
                           </el-button>
                         </template>
@@ -125,13 +103,9 @@
                       </el-col>
                       <el-col :span="6">
                         <el-form-item prop="platform">
-                          <el-select v-model="externalProblemForm.platform" placeholder="选择平台">
-                            <el-option label="Codeforces" value="Codeforces"></el-option>
-                            <el-option label="AtCoder" value="AtCoder"></el-option>
-                            <el-option label="LeetCode" value="LeetCode"></el-option>
-                            <el-option label="HDU" value="HDU"></el-option>
-                            <el-option label="POJ" value="POJ"></el-option>
-                          </el-select>
+                          <platform-select v-model="externalProblemForm.platform" placeholder="选择平台" size="small"
+                            :platforms="['codeforces', 'atcoder', 'leetcode', 'nowcoder', 'luogu']" :show-icon="true"
+                            @change="handlePlatformChange" />
                         </el-form-item>
                       </el-col>
                       <el-col :span="6">
@@ -172,7 +146,7 @@
         <el-tab-pane name="remove-problems">
           <span slot="label">
             <i class="el-icon-delete"></i>
-            移除题目 ({{ localProblems.length + externalProblems.length }})
+            移除题目
           </span>
 
           <div class="remove-problems-management">
@@ -195,19 +169,8 @@
                   <el-table-column prop="id" label="题目ID" width="100" align="center"></el-table-column>
                   <el-table-column label="操作" width="120" align="center">
                     <template #default="scope">
-                      <el-button
-                          type="text"
-                          size="small"
-                          @click="viewProblem(scope.row.id)"
-                      >
-                        查看
-                      </el-button>
-                      <el-button
-                          type="text"
-                          size="small"
-                          style="color: #f56c6c;"
-                          @click="removeLocalProblem(scope.$index)"
-                      >
+                      <el-button type="text" size="small" style="color: #f56c6c;"
+                        @click="removeLocalProblem(scope.$index)">
                         移除
                       </el-button>
                     </template>
@@ -226,9 +189,7 @@
                   <el-table-column prop="title" label="题目名称" min-width="200"></el-table-column>
                   <el-table-column label="平台" width="120" align="center">
                     <template #default="scope">
-                      <span class="platform-tag" :class="getPlatformClass(scope.row.platform)">
-                        {{ scope.row.platform }}
-                      </span>
+                      <platform-tag :platform="scope.row.platform.toLowerCase()" :clickable="false" size="small" />
                     </template>
                   </el-table-column>
                   <el-table-column label="难度" width="100" align="center">
@@ -238,19 +199,11 @@
                   </el-table-column>
                   <el-table-column label="操作" width="120" align="center">
                     <template #default="scope">
-                      <el-button
-                          type="text"
-                          size="small"
-                          @click="viewExternalProblem(scope.row.url)"
-                      >
+                      <el-button type="text" size="small" @click="viewExternalProblem(scope.row.url)">
                         访问
                       </el-button>
-                      <el-button
-                          type="text"
-                          size="small"
-                          style="color: #f56c6c;"
-                          @click="removeExternalProblem(scope.$index)"
-                      >
+                      <el-button type="text" size="small" style="color: #f56c6c;"
+                        @click="removeExternalProblem(scope.$index)">
                         移除
                       </el-button>
                     </template>
@@ -282,24 +235,25 @@
 import ZHeader from '@/components/ZHeader.vue';
 import MarkdownEditor from '@/components/MarkdownEditor.vue';
 import DifficultyTag from '@/components/DifficultyTag.vue';
+import PlatformSelect from '@/components/PlatformSelect.vue';
+import PlatformTag from '@/components/PlatformTag.vue';
 import {
   getProblemSetDetail,
   updateProblemSet,
-  // addProblemToProblemSet,
-  // removeProblemFromProblemSet
+  removeInternalProblem,
+  removeExternalProblem,
+  addInternalProblem,
 } from '@/api/problemSet';
-import {searchProblems} from '@/api/problem';
+import { searchProblems } from '@/api/problem';
 
 export default {
   name: 'EditProblemSet',
-  components: {ZHeader, MarkdownEditor, DifficultyTag},
+  components: { ZHeader, MarkdownEditor, DifficultyTag, PlatformSelect, PlatformTag },
   data() {
     return {
-      problemSetId: this.$route.params.problemSetId,
+      problemSetId: 0,
       activeTab: 'basic',
       addProblemTab: 'local',
-      submitting: false,
-      problemsSubmitting: false,
 
       // 原始数据备份
       originalData: {},
@@ -317,7 +271,7 @@ export default {
 
       // 搜索相关
       searchForm: {
-        localProblemId: ''
+        keyword: ''
       },
       searchResults: [],
 
@@ -333,16 +287,16 @@ export default {
       // 表单验证规则
       rules: {
         title: [
-          {required: true, message: '请输入题单标题', trigger: 'blur'},
-          {min: 2, max: 100, message: '标题长度在 2 到 100 个字符', trigger: 'blur'}
+          { required: true, message: '请输入题单标题', trigger: 'blur' },
+          { min: 2, max: 100, message: '标题长度在 2 到 100 个字符', trigger: 'blur' }
         ]
       },
 
       externalRules: {
-        title: [{required: true, message: '请输入题目名称', trigger: 'blur'}],
-        platform: [{required: true, message: '请选择平台', trigger: 'change'}],
-        difficulty: [{required: true, message: '请选择难度', trigger: 'change'}],
-        url: [{required: true, message: '请输入题目链接', trigger: 'blur'}]
+        title: [{ required: true, message: '请输入题目名称', trigger: 'blur' }],
+        platform: [{ required: true, message: '请选择平台', trigger: 'change' }],
+        difficulty: [{ required: true, message: '请选择难度', trigger: 'change' }],
+        url: [{ required: true, message: '请输入题目链接', trigger: 'blur' }]
       }
     }
   },
@@ -352,7 +306,8 @@ export default {
   methods: {
     // 获取题单详情
     async fetchProblemSetDetail() {
-      const data = await getProblemSetDetail(this.problemSetId);
+      const data = await getProblemSetDetail(this.$route.params.problemSetId);
+      this.problemSetId = data.id
       this.problemSetForm = {
         title: data.title,
         description: data.description || '',
@@ -375,24 +330,13 @@ export default {
 
     // 搜索本站题目
     async searchLocalProblems() {
-      if (!this.searchForm.localProblemId.trim()) {
-        this.$message.warning('请输入题目ID或名称');
+      if (!this.searchForm.keyword.trim()) {
+        this.$message.warning('请输入题目编号或名称');
         return;
       }
-
-      try {
-        const response = await searchProblems({keyword: this.searchForm.localProblemId});
-        this.searchResults = response.data.records || [];
-        if (this.searchResults.length === 0) {
-          this.$message.info('未找到相关题目');
-        }
-      } catch (error) {
-        // 使用假数据
-        this.searchResults = [
-          {id: 1003, title: '二叉树最大深度', difficulty: 1},
-          {id: 1004, title: '合并有序链表', difficulty: 1},
-          {id: 1005, title: '有效括号', difficulty: 1}
-        ];
+      this.searchResults = await searchProblems(this.searchForm.keyword);
+      if (this.searchResults.length === 0) {
+        this.$message.info('未找到相关题目');
       }
     },
 
@@ -402,19 +346,19 @@ export default {
     },
 
     // 添加本站题目
-    addLocalProblem(problem) {
+    async addLocalProblem(problem) {
       if (this.isLocalProblemAdded(problem.id)) {
         this.$message.warning('该题目已添加');
         return;
       }
-
+      await addInternalProblem(this.problemSetId, problem.id);
       this.localProblems.push(problem);
       this.$message.success(`题目"${problem.title}"添加成功`);
     },
 
     // 添加外站题目
-    addExternalProblem() {
-      this.$refs.externalForm.validate((valid) => {
+    async addExternalProblem() {
+      this.$refs.externalForm.validate(async (valid) => {
         if (valid) {
           const newProblem = {
             id: Date.now().toString(),
@@ -444,7 +388,8 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
+      }).then(async () => {
+        await removeInternalProblem(this.problemSetId, problem.id);
         this.localProblems.splice(index, 1);
         this.$message.success('题目移除成功');
       });
@@ -457,7 +402,8 @@ export default {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
-      }).then(() => {
+      }).then(async () => {
+        await removeExternalProblem(this.problemSetId, problem.id);
         this.externalProblems.splice(index, 1);
         this.$message.success('题目移除成功');
       });
@@ -483,18 +429,6 @@ export default {
       }
     },
 
-    // 工具方法
-    getPlatformClass(platform) {
-      const classMap = {
-        'Codeforces': 'codeforces',
-        'AtCoder': 'atcoder',
-        'LeetCode': 'leetcode',
-        'HDU': 'hdu',
-        'POJ': 'poj'
-      };
-      return classMap[platform] || 'other';
-    },
-
     viewProblem(problemId) {
       window.open(`/problem/${problemId}`, '_blank');
     },
@@ -506,6 +440,12 @@ export default {
     onDescriptionChange(content) {
       console.log(content)
       // 内容变化处理
+    },
+
+    // 处理平台选择变化
+    handlePlatformChange(value, platformInfo) {
+      console.log('选择的平台:', value, platformInfo);
+      // 可以在这里处理平台选择后的逻辑，比如自动填充某些字段
     }
   }
 }
@@ -607,33 +547,6 @@ export default {
   font-size: 16px;
   font-weight: 600;
   color: #303133;
-}
-
-.platform-tag {
-  font-size: 12px;
-  padding: 4px 8px;
-  border-radius: 12px;
-  font-weight: 500;
-}
-
-.platform-tag.codeforces {
-  background: #ff6b6b;
-  color: white;
-}
-
-.platform-tag.atcoder {
-  background: #3742fa;
-  color: white;
-}
-
-.platform-tag.leetcode {
-  background: #ffa502;
-  color: white;
-}
-
-.platform-tag.other {
-  background: #747d8c;
-  color: white;
 }
 
 .empty-problems {

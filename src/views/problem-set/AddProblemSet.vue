@@ -10,11 +10,7 @@
           <el-row :gutter="20">
             <el-col :span="12">
               <el-form-item label="题单标题" prop="title">
-                <el-input
-                  v-model="problemSetForm.title"
-                  placeholder="请输入题单标题"
-                  size="small"
-                ></el-input>
+                <el-input v-model="problemSetForm.title" placeholder="请输入题单标题" size="small"></el-input>
               </el-form-item>
             </el-col>
             <el-col :span="12">
@@ -32,10 +28,7 @@
         <div class="form-section">
           <h3 class="section-title">题单描述</h3>
           <div class="description-section">
-            <markdown-editor
-              v-model="problemSetForm.description"
-              :height="500"
-              placeholder="请输入题单描述，支持 Markdown 和 LaTeX 语法
+            <markdown-editor v-model="problemSetForm.description" :height="500" placeholder="请输入题单描述，支持 Markdown 和 LaTeX 语法
 
 示例：
 # 题单介绍
@@ -54,9 +47,7 @@ $$
 \sum_{i=1}^{n} i = \frac{n(n+1)}{2}
 $$
 
-> **提示**：建议按照从易到难的顺序安排题目"
-              @change="onDescriptionChange"
-            />
+> **提示**：建议按照从易到难的顺序安排题目" @change="onDescriptionChange" />
           </div>
         </div>
 
@@ -135,16 +126,15 @@ export default {
 
 <style scoped>
 .add-problem-set-container {
-  min-height: 100vh;
-  background: #f5f7fa;
+  min-height: 85vh;
   padding: 20px;
 }
 
 .form-container {
   background: white;
   border-radius: 8px;
-  padding: 30px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+  padding: 20px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   margin: 0 auto;
 }
 
@@ -179,8 +169,7 @@ export default {
 
 /* 响应式设计 */
 @media (max-width: 768px) {
-  .add-problem-set-container {
-  }
+  .add-problem-set-container {}
 
   .split-right {
     height: 300px;

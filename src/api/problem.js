@@ -1,5 +1,13 @@
 import request from '@/utils/request'
 
+export function searchProblems(keyword) {
+    return request({
+        url: '/problem/search',
+        method: 'get',
+        params: { keyword }
+    })
+}
+
 // 添加题目
 export function addProblem(data) {
     return request({
@@ -88,19 +96,19 @@ export function addTag(name) {
 // 删除标签
 export function deleteTag(id) {
     return request({
-        url: `/tag/${id}`, 
+        url: `/tag/${id}`,
         method: 'delete'
     })
 }
 
-// 获取提交记录
-export function getSubmissions(submissionQueryDTO) {
-    return request({
-        url: '/judge/submission',
-        method: 'post',
-        data: submissionQueryDTO
-    })
-}
+// // 获取提交记录
+// export function getSubmissions(submissionQueryDTO) {
+//     return request({
+//         url: '/judge/submission',
+//         method: 'post',
+//         data: submissionQueryDTO
+//     })
+// }
 
 // 获取提交记录详情
 export function getSubmissionInfo(submitId) {
@@ -137,7 +145,7 @@ export function deleteTestCase(id) {
     })
 }
 
-export function getProblemTags(problemId){
-    return request.get( `/problem/${problemId}/tags`)
+export function getProblemTags(problemId) {
+    return request.get(`/problem/${problemId}/tags`)
 }
 

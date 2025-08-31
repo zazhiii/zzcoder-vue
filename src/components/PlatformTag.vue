@@ -1,10 +1,6 @@
 <template>
-  <span
-    class="platform-tag"
-    :class="platformClass"
-    @click="handleClick"
-    :title="clickable ? `点击访问 ${platformName}` : ''"
-  >
+  <span class="platform-tag" :class="platformClass" @click="handleClick"
+    :title="clickable ? `点击访问 ${platformName}` : ''">
     <i :class="iconClass" v-if="showIcon"></i>
     {{ platformName }}
     <i class="el-icon-top-right" v-if="clickable"></i>
@@ -20,7 +16,7 @@ export default {
       type: String,
       required: true,
       validator: (value) => {
-        return ['leetcode', 'luogu', 'codeforces', 'AtCoder', 'NowCoder', 'HDU', 'POJ'].includes(value);
+        return ['zzcoder', 'leetcode', 'luogu', 'codeforces', 'atcoder', 'nowcoder', 'hdu', 'poj'].includes(value);
       }
     },
     // 是否可点击跳转
@@ -51,13 +47,14 @@ export default {
     platformName() {
       // 统一平台名称显示
       const nameMap = {
-        'LeetCode': 'LeetCode',
-        'Luogu': '洛谷',
-        'Codeforces': 'Codeforces',
-        'AtCoder': 'AtCoder',
-        'NowCoder': '牛客',
-        'HDU': 'HDU',
-        'POJ': 'POJ'
+        'zzcoder': 'ZZCoder',
+        'leetcode': 'LeetCode',
+        'luogu': '洛谷',
+        'codeforces': 'Codeforces',
+        'atcoder': 'AtCoder',
+        'nowcoder': '牛客',
+        'hdu': 'HDU',
+        'poj': 'POJ'
       };
       return nameMap[this.platform] || this.platform;
     },

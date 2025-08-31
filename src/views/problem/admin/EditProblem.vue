@@ -22,16 +22,17 @@
         </el-col>
         <el-col :span="5">
           <el-form-item label="空间限制MB">
-            <el-input-number v-model="problemForm.memoryLimit" :min="0" :step="128" controls-position="right" size="mini">
+            <el-input-number v-model="problemForm.memoryLimit" :min="0" :step="128" controls-position="right"
+              size="mini">
             </el-input-number>
           </el-form-item>
         </el-col>
-<!--        <el-col :span="4">-->
-<!--          <el-form-item label="栈限制MB">-->
-<!--            <el-input-number v-model="problemForm.stackLimit" :min="0" :step="32" controls-position="right" size="mini">-->
-<!--            </el-input-number>-->
-<!--          </el-form-item>-->
-<!--        </el-col>-->
+        <!--        <el-col :span="4">-->
+        <!--          <el-form-item label="栈限制MB">-->
+        <!--            <el-input-number v-model="problemForm.stackLimit" :min="0" :step="32" controls-position="right" size="mini">-->
+        <!--            </el-input-number>-->
+        <!--          </el-form-item>-->
+        <!--        </el-col>-->
         <el-col :span="4">
           <el-form-item label="题目难度">
             <DifficultyOptions v-model="problemForm.difficulty" size="mini"></DifficultyOptions>
@@ -115,8 +116,8 @@
 </template>
 
 <script>
-import {getProblemInfo, updateProblem} from '@/api/problem'
-import DifficultyOptions from "@/components/DifficultyOptions.vue";
+import { getProblemInfo, updateProblem } from '@/api/problem'
+import DifficultyOptions from "@/components/DifficultySelect.vue";
 import ZHeader from "@/components/ZHeader.vue";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 
@@ -176,6 +177,4 @@ export default {
   max-width: 1000px;
   margin: 0 auto;
 }
-
-
 </style>

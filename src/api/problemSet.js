@@ -1,11 +1,11 @@
 import _axios from '@/utils/request';
 
-export function pageProblemSet({title, page = 1, pageSize = 10, status}) {
-    return _axios({
-      url: '/problem-set/page',
-      method: 'get',
-      params: { title, page, pageSize, status }
-    })
+export function pageProblemSet({ title, page = 1, pageSize = 10, status }) {
+  return _axios({
+    url: '/problem-set/page',
+    method: 'get',
+    params: { title, page, pageSize, status }
+  })
 }
 
 // 获取题单详情
@@ -25,7 +25,7 @@ export function addProblemSet(data) {
   });
 }
 
-// 更新题单
+// 更新题单基本信息
 export function updateProblemSet(id, data) {
   return _axios({
     url: `/problem-set/${id}`,
@@ -42,19 +42,31 @@ export function deleteProblemSet(id) {
   });
 }
 
-// 向题单添加题目
-export function addProblemToProblemSet(problemSetId, data) {
+// 移除内部题目
+export function removeInternalProblem(problemSetId, problemId) {
   return _axios({
-    url: `/problemSet/${problemSetId}/problems`,
-    method: 'post',
-    data
+    url: `/problem-set/internal`,
+    method: 'delete',
+    params: { problemSetId, problemId }
   });
 }
 
-// 从题单移除题目
-export function removeProblemFromProblemSet(problemSetId, problemId) {
+// 移除外部题目
+export function removeExternalProblem(problemSetId, problemId) {
   return _axios({
-    url: `/problemSet/${problemSetId}/problems/${problemId}`,
-    method: 'delete'
+    url: `/problem-set/external`,
+    method: 'delete',
+    params: { problemSetId, problemId }
   });
 }
+
+// 添加内部题目
+export function addInternalProblem(problemSetId, problemId) {
+  return _axios({
+    url: `/problem-set/add-problem/internal`,
+    method: 'post',
+    params: { problemSetId, problemId }
+  });
+}
+
+

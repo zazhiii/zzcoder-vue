@@ -117,7 +117,7 @@
             <div class="test-header">
               <h1 class="test-title">{{ judgeResult.status }}</h1>
             </div>
-            <el-row :gutter="10">
+            <el-row :gutter="5">
               <el-col :span="4" v-for="(item, key, index) in judgeResult.testCaseStatus" :key="key">
                 <TestCaseResult :index="index + 1" :item="item" />
               </el-col>

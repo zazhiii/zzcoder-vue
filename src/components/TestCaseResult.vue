@@ -72,8 +72,8 @@ export default {
                 "JUDGING": "评测中",
                 "AC": "答案正确",
                 "WA": "错误答案",
-                "TLE": "超出时间限制",
-                "MLE": "超出内存限制",
+                "TLE": "时间超限",
+                "MLE": "内存超限",
                 "RE": "运行错误",
                 "CE": "编译错误",
                 "SE": "系统错误"
@@ -120,7 +120,7 @@ export default {
 <style scoped>
 .test-case {
     border-radius: 8px;
-    padding: 12px;
+    padding: 5px;
     text-align: center;
     transition: all 0.3s ease;
     border: 2px solid transparent;
@@ -128,6 +128,10 @@ export default {
     display: flex;
     flex-direction: column;
     justify-content: center;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow: hidden;
+    box-sizing: border-box;
 }
 
 .test-case-header {
@@ -140,6 +144,9 @@ export default {
 .test-case-id {
     font-weight: bold;
     font-size: 14px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status-icon {
@@ -149,14 +156,19 @@ export default {
 .test-case-status {
     font-weight: bold;
     margin-bottom: 8px;
-    font-size: 14px;
+    font-size: 12px;
+    line-height: 1.2;
+    word-wrap: break-word;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 
 .test-case-metrics {
     display: flex;
     justify-content: space-around;
-    gap: 8px;
+    gap: 4px;
     margin-top: 8px;
+    flex-wrap: wrap;
 }
 
 .test-case-time,
@@ -165,22 +177,33 @@ export default {
     display: flex;
     flex-direction: column;
     gap: 2px;
+    flex: 1;
+    min-width: 0;
 }
 
 .metric-label {
     color: #666;
     font-size: 10px;
+    white-space: nowrap;
 }
 
 .metric-value {
     font-weight: bold;
     color: #2e7d32;
+    font-size: 8px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
 
 .status-description {
-    font-size: 11px;
+    font-size: 10px;
     margin-top: 4px;
     opacity: 0.8;
+    line-height: 1.2;
+    word-wrap: break-word;
+    word-break: keep-all;
+    overflow-wrap: break-word;
 }
 
 /* 状态样式 */

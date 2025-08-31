@@ -22,7 +22,8 @@
         </el-col>
         <el-col :span="5">
           <el-form-item label="空间限制MB">
-            <el-input-number v-model="problemForm.memoryLimit" :min="0" :step="128" controls-position="right" size="mini">
+            <el-input-number v-model="problemForm.memoryLimit" :min="0" :step="128" controls-position="right"
+              size="mini">
             </el-input-number>
           </el-form-item>
         </el-col>
@@ -115,7 +116,7 @@
 </template>
 
 <script>
-import DifficultyOptions from "@/components/DifficultyOptions.vue";
+import DifficultyOptions from "@/components/DifficultySelect.vue";
 import ZHeader from "@/components/ZHeader.vue";
 import MarkdownRenderer from "@/components/MarkdownRenderer.vue";
 
@@ -146,7 +147,7 @@ export default {
   async mounted() {
   },
   methods: {
-    
+
   }
 }
 </script>
@@ -160,6 +161,4 @@ export default {
   max-width: 1000px;
   margin: 0 auto;
 }
-
-
 </style>

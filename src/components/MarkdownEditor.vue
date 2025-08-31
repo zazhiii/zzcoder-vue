@@ -7,35 +7,11 @@
           <span class="toolbar-title">
             <i class="el-icon-edit"></i> 编辑器
           </span>
-          <div class="toolbar-buttons">
-            <!-- 基础格式 -->
-            <el-button-group size="mini">
-              <el-button @click="insertMarkdown('**粗体**')" title="粗体" size="mini">粗体</el-button>
-              <el-button @click="insertMarkdown('*斜体*')" title="斜体" size="mini"> 斜体</el-button>
-              <el-button @click="insertMarkdown('`code`')" title="行内代码" size="mini">行内代码</el-button>
-              <el-button @click="insertMarkdown('# ')" title="标题" size="mini">H1</el-button>
-              <el-button @click="insertMarkdown('## ')" title="标题" size="mini">H2</el-button>
-              <el-button @click="insertMarkdown('### ')" title="子标题" size="mini">H3</el-button>
-              <el-button @click="insertMarkdown('\n- ')" title="列表" size="mini">列表</el-button>
-              <el-button @click="insertMarkdown('\n> ')" title="引用" size="mini">引用</el-button>
-              <el-button @click="insertMarkdown('[链接](URL)')" title="链接" size="mini">链接</el-button>
-              <el-button @click="insertCodeBlock" title="代码块" size="mini">代码块</el-button>
-              <el-button @click="insertMarkdown('$公式$')" title="内联公式" size="mini">内联公式</el-button>
-              <el-button @click="insertMathBlock" title="公式块" size="mini">公式块</el-button>
-            </el-button-group>
-          </div>
         </div>
 
         <div class="textarea-container">
-          <el-input
-              ref="textarea"
-              type="textarea"
-              v-model="content"
-              :placeholder="placeholder"
-              :autosize="{minRows: 18, maxRows: 18}"
-              @input="handleInput"
-              @keydown.tab.prevent="handleTab"
-          ></el-input>
+          <el-input ref="textarea" type="textarea" v-model="content" :placeholder="placeholder"
+            :autosize="{ minRows: 20, maxRows: 20 }" @input="handleInput" @keydown.tab.prevent="handleTab"></el-input>
         </div>
       </div>
 
@@ -73,7 +49,7 @@ import MarkdownRenderer from '@/components/MarkdownRenderer.vue';
 
 export default {
   name: 'MarkdownEditor',
-  components: {MarkdownRenderer},
+  components: { MarkdownRenderer },
   props: {
     value: {
       type: String,
@@ -221,7 +197,7 @@ export default {
         return;
       }
 
-      const blob = new Blob([this.content], {type: 'text/markdown;charset=utf-8'});
+      const blob = new Blob([this.content], { type: 'text/markdown;charset=utf-8' });
       const url = URL.createObjectURL(blob);
       const link = document.createElement('a');
       link.href = url;
@@ -271,7 +247,8 @@ export default {
   min-height: 400px;
 }
 
-.split-left, .split-right {
+.split-left,
+.split-right {
   flex: 1;
   display: flex;
   flex-direction: column;
@@ -307,13 +284,6 @@ export default {
   align-items: center;
   gap: 5px;
   white-space: nowrap;
-}
-
-.toolbar-buttons {
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
-  gap: 4px;
 }
 
 /* 编辑器容器 */
@@ -429,7 +399,8 @@ export default {
     height: auto;
   }
 
-  .split-left, .split-right {
+  .split-left,
+  .split-right {
     border: none;
     border-bottom: 1px solid #ebeef5;
   }

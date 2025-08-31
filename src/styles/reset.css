@@ -1,0 +1,281 @@
+/**
+ * CSS Reset 全局样式重置
+ * 基于 Normalize.css 和现代 CSS Reset 最佳实践
+ */
+
+/* 1. 使用更直观的盒模型 */
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+
+/* 2. 移除所有元素的默认 margin 和 padding */
+* {
+    margin: 0;
+    padding: 0;
+}
+
+/* 3. 改善文本渲染 */
+html {
+    -webkit-text-size-adjust: 100%;
+    /* iOS Safari */
+    -ms-text-size-adjust: 100%;
+    /* IE10+ */
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-rendering: optimizeLegibility;
+}
+
+/* 4. 改善行高计算 */
+body {
+    line-height: 1.5;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'PingFang SC', 'Hiragino Sans GB',
+        'Microsoft YaHei', 'Helvetica Neue', Helvetica, Arial, sans-serif, 'Apple Color Emoji',
+        'Segoe UI Emoji', 'Segoe UI Symbol';
+    color: #333;
+    background-color: #fff;
+    font-size: 14px;
+    word-wrap: break-word;
+}
+
+/* 5. 改善媒体元素的默认样式 */
+img,
+picture,
+video,
+canvas,
+svg {
+    display: block;
+    max-width: 100%;
+    height: auto;
+}
+
+/* 6. 移除表单元素的默认样式 */
+input,
+button,
+textarea,
+select {
+    font: inherit;
+    color: inherit;
+}
+
+/* 7. 避免文本溢出 */
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+    overflow-wrap: break-word;
+    hyphens: auto;
+}
+
+/* 8. 改善表格样式 */
+table {
+    border-collapse: collapse;
+    border-spacing: 0;
+}
+
+/* 9. 改善列表样式 */
+ol,
+ul {
+    list-style: none;
+}
+
+/* 10. 移除引用的默认样式 */
+blockquote,
+q {
+    quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+    content: '';
+    content: none;
+}
+
+/* 11. 改善链接样式 */
+a {
+    background-color: transparent;
+    text-decoration: none;
+    color: inherit;
+}
+
+a:active,
+a:hover {
+    outline: 0;
+}
+
+/* 12. 改善按钮样式 */
+button {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    outline: none;
+}
+
+button:disabled {
+    cursor: not-allowed;
+}
+
+/* 13. 改善输入框样式 */
+input,
+textarea {
+    outline: none;
+    border: none;
+    background: transparent;
+}
+
+input:focus,
+textarea:focus {
+    outline: none;
+}
+
+/* 14. 移除 IE 浏览器输入框的默认清除按钮 */
+input::-ms-clear,
+input::-ms-reveal {
+    display: none;
+}
+
+/* 15. 移除 webkit 浏览器输入框的默认样式 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type="number"] {
+    -moz-appearance: textfield;
+    appearance: textfield;
+}
+
+/* 16. 改善 HR 元素样式 */
+hr {
+    border: 0;
+    height: 1px;
+    background: #ccc;
+    margin: 20px 0;
+}
+
+/* 17. 改善代码样式 */
+code,
+pre {
+    font-family: 'SFMono-Regular', Consolas, 'Liberation Mono', Menlo, Courier, monospace;
+}
+
+/* 18. 改善选择文本的样式 */
+::selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+::-moz-selection {
+    background: #b3d4fc;
+    text-shadow: none;
+}
+
+/* 19. 滚动条样式 (Webkit) */
+::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #c1c1c1;
+    border-radius: 4px;
+    transition: background 0.3s ease;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #a8a8a8;
+}
+
+/* 20. 改善根容器 */
+#app {
+    min-height: 100vh;
+    position: relative;
+}
+
+/* 21. 辅助类 */
+.clearfix::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+.sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* 22. 打印样式 */
+@media print {
+
+    *,
+    *:before,
+    *:after {
+        background: transparent !important;
+        color: #000 !important;
+        box-shadow: none !important;
+        text-shadow: none !important;
+    }
+
+    a,
+    a:visited {
+        text-decoration: underline;
+    }
+
+    a[href]:after {
+        content: " (" attr(href) ")";
+    }
+
+    abbr[title]:after {
+        content: " (" attr(title) ")";
+    }
+
+    pre,
+    blockquote {
+        border: 1px solid #999;
+        page-break-inside: avoid;
+    }
+
+    thead {
+        display: table-header-group;
+    }
+
+    tr,
+    img {
+        page-break-inside: avoid;
+    }
+
+    img {
+        max-width: 100% !important;
+    }
+
+    p,
+    h2,
+    h3 {
+        orphans: 3;
+        widows: 3;
+    }
+
+    h2,
+    h3 {
+        page-break-after: avoid;
+    }
+}

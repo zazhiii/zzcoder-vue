@@ -3,6 +3,11 @@ import App from './App.vue'
 import router from './router'
 import store from './store'
 
+// 全局样式重置
+import './styles/reset.css'
+// 全局通用样式
+import './styles/global.css'
+
 Vue.config.productionTip = false
 
 import ElementUI from 'element-ui'
