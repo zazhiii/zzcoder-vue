@@ -193,11 +193,8 @@ export default {
   methods: {
     async initData() {
       if (this.isLogin) {
-        await Promise.all([
-          this.fetchUserSubmissionStat(),
-          this.fetchRecentSubmissions()
-        ]);
-        this.startAutoRefresh();
+        await this.fetchUserSubmissionStat()
+        await this.fetchRecentSubmissions()
       }
     },
 
@@ -232,16 +229,6 @@ export default {
       } finally {
         this.submissionsLoading = false;
       }
-    },
-
-    startAutoRefresh() {
-      // 每5分钟自动刷新数据
-      this.refreshTimer = setInterval(() => {
-        if (this.isLogin) {
-          this.fetchUserSubmissionStat();
-          this.fetchRecentSubmissions();
-        }
-      }, 5 * 60 * 1000);
     },
 
     navigateTo(path) {

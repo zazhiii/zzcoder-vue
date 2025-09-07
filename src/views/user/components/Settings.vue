@@ -134,7 +134,7 @@ import { uploadFile } from '@/api/common';
 import { updateUserAvatar, updateEmail } from '@/api/user';
 import { updatePassword } from '@/api/auth';
 import { removeToken } from '@/utils/cookie';
-import { mapMutations } from "vuex";
+import { mapActions, mapMutations } from "vuex";
 
 export default {
     name: 'UserSettings',
@@ -210,6 +210,7 @@ export default {
     },
     methods: {
         ...mapMutations('user', ['clearUserInfo']),
+        ...mapActions('user', ['getUserInfo']),
 
         // 保存基本设置
         async saveGeneral() {
@@ -262,6 +263,7 @@ export default {
             try {
                 await updateUserAvatar(this.imageUrl);
                 this.clearUserInfo();
+                await this.getUserInfo();
                 this.$message.success('头像更新成功');
             } catch (error) {
                 this.$message.error('头像更新失败');
