@@ -1,12 +1,12 @@
 <template>
     <div class="settings-container">
         <el-card class="settings-card" shadow="hover">
-            <div slot="header" class="card-header">
+            <!-- <div slot="header" class="card-header">
                 <h2 class="settings-title">
                     <i class="el-icon-setting"></i>
                     用户设置
                 </h2>
-            </div>
+            </div> -->
 
             <el-tabs v-model="activeTab" type="card" class="settings-tabs">
                 <!-- 基本设置 -->
@@ -17,7 +17,7 @@
                     </span>
                     <div class="tab-content">
                         <el-form :model="generalForm" label-width="120px" class="settings-form">
-                            <el-form-item label="Codeforces用户名">
+                            <el-form-item label="Codeforces名称">
                                 <el-input v-model="generalForm.cfUsername" placeholder="请输入Codeforces用户名"
                                     style="width: 300px;">
                                 </el-input>
@@ -131,7 +131,7 @@
 <script>
 import SendEmailCode from '@/views/login/components/SendEmailCode.vue';
 import { uploadFile } from '@/api/common';
-import { updateUserAvatar, updateEmail } from '@/api/user';
+import { updateUserAvatar, updateEmail, updateUserProfile } from '@/api/user';
 import { updatePassword } from '@/api/auth';
 import { removeToken } from '@/utils/cookie';
 import { mapActions, mapMutations } from "vuex";
@@ -217,7 +217,7 @@ export default {
             this.generalLoading = true;
             try {
                 // 这里添加保存基本设置的API调用
-                console.log('保存基本设置:', this.generalForm);
+                await updateUserProfile(this.generalForm);
                 this.$message.success('基本设置保存成功');
             } catch (error) {
                 this.$message.error('保存失败，请重试');
@@ -389,7 +389,7 @@ export default {
 }
 
 .settings-form {
-    background-color: #fafafa;
+    /* background-color: #fafafa; */
     padding: 30px;
     border-radius: 8px;
     border: 1px solid #ebeef5;

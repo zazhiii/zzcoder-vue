@@ -1,13 +1,13 @@
 <template>
     <div class="submission-list">
         <!-- 页面头部 -->
-        <div class="page-header">
+        <!-- <div class="page-header">
             <h1 class="page-title">
                 <i class="el-icon-document"></i>
                 提交记录
             </h1>
             <p class="page-subtitle">查看所有代码提交记录和执行结果</p>
-        </div>
+        </div> -->
 
         <!-- 筛选和搜索区域 -->
         <el-card class="filter-card" shadow="never">
@@ -371,7 +371,7 @@ export default {
 <style scoped>
 .submission-list {
     padding: 20px;
-    max-width: 1400px;
+    /* max-width: 1400px; */
     margin: 0 auto;
     background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
     min-height: calc(100vh - 120px);

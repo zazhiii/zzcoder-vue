@@ -14,12 +14,6 @@
                 <div class="user-details">
                     <h1 class="username">{{ userInfo.username }}</h1>
                     <p class="user-email">{{ userInfo.email || '未设置邮箱' }}</p>
-                    <div class="user-tags">
-                        <el-tag type="primary" effect="light">编程爱好者</el-tag>
-                        <el-tag type="success" effect="light" v-if="userSubmissionStat.acProblem > 0">
-                            活跃用户
-                        </el-tag>
-                    </div>
                     <div class="join-date">
                         <i class="el-icon-calendar"></i>
                         <span>加入时间：{{ formatDate(userInfo.createTime) }}</span>
@@ -83,7 +77,7 @@
             </el-row>
 
             <!-- 进度条展示 -->
-            <div class="progress-section">
+            <!-- <div class="progress-section">
                 <h3>解题进度</h3>
                 <div class="progress-item">
                     <div class="progress-header">
@@ -102,62 +96,7 @@
                     <el-progress :percentage="acceptanceRate" :color="getRateColor(acceptanceRate)" :stroke-width="8"
                         class="custom-progress"></el-progress>
                 </div>
-            </div>
-        </el-card>
-
-        <!-- 快速操作卡片 -->
-        <el-card class="actions-card" shadow="always">
-            <div slot="header" class="card-header">
-                <i class="el-icon-s-tools"></i>
-                <span>快速操作</span>
-            </div>
-
-            <el-row :gutter="16">
-                <el-col :xs="12" :sm="8" :md="6">
-                    <div class="action-item" @click="navigateTo('/problem')">
-                        <div class="action-icon problem">
-                            <i class="el-icon-collection"></i>
-                        </div>
-                        <div class="action-text">
-                            <h4>去刷题</h4>
-                            <p>挑战更多题目</p>
-                        </div>
-                    </div>
-                </el-col>
-                <el-col :xs="12" :sm="8" :md="6">
-                    <div class="action-item" @click="navigateTo('/submissions')">
-                        <div class="action-icon submissions">
-                            <i class="el-icon-document"></i>
-                        </div>
-                        <div class="action-text">
-                            <h4>提交记录</h4>
-                            <p>查看历史提交</p>
-                        </div>
-                    </div>
-                </el-col>
-                <el-col :xs="12" :sm="8" :md="6">
-                    <div class="action-item" @click="navigateTo('/contest')">
-                        <div class="action-icon contest">
-                            <i class="el-icon-trophy"></i>
-                        </div>
-                        <div class="action-text">
-                            <h4>参加竞赛</h4>
-                            <p>提升编程技能</p>
-                        </div>
-                    </div>
-                </el-col>
-                <el-col :xs="12" :sm="8" :md="6">
-                    <div class="action-item" @click="navigateTo('/user/settings')">
-                        <div class="action-icon settings">
-                            <i class="el-icon-setting"></i>
-                        </div>
-                        <div class="action-text">
-                            <h4>账户设置</h4>
-                            <p>修改个人信息</p>
-                        </div>
-                    </div>
-                </el-col>
-            </el-row>
+            </div> -->
         </el-card>
     </div>
 </template>
@@ -235,7 +174,7 @@ export default {
 <style scoped>
 .profile-container {
     padding: 20px;
-    max-width: 1200px;
+    /* max-width: 1200px; */
     margin: 0 auto;
     background: linear-gradient(135deg, #f8f9ff 0%, #ffffff 100%);
     min-height: calc(100vh - 120px);
@@ -310,17 +249,6 @@ export default {
     font-size: 1.1rem;
     margin: 0 0 16px 0;
     opacity: 0.9;
-}
-
-.user-tags {
-    margin-bottom: 16px;
-}
-
-.user-tags .el-tag {
-    margin-right: 8px;
-    margin-bottom: 8px;
-    border: none;
-    font-weight: 500;
 }
 
 .join-date {
@@ -459,13 +387,6 @@ export default {
 .custom-progress>>>.el-progress-bar__inner {
     border-radius: 8px;
     transition: all 0.8s ease;
-}
-
-/* 快速操作卡片 */
-.actions-card {
-    border-radius: 16px;
-    border: none;
-    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
 }
 
 .action-item {
@@ -614,16 +535,11 @@ export default {
 }
 
 .user-card,
-.stats-card,
-.actions-card {
+.stats-card {
     animation: fadeInUp 0.6s ease forwards;
 }
 
 .stats-card {
     animation-delay: 0.1s;
-}
-
-.actions-card {
-    animation-delay: 0.2s;
 }
 </style>

@@ -12,6 +12,10 @@ export const updateUserAvatar = (avatarUrl) => {
     return _axios.put("/user/avatar", {}, { params: { avatarUrl } })
 }
 
+export const updateUserProfile = (data) => {
+    return _axios.put("/user/profile", data)
+}
+
 // 获取用户提交统计信息
 export function getSubmitStat() {
     return _axios.get("/user/submit-stat")
