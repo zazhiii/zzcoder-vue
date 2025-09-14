@@ -13,6 +13,10 @@ export default {
         email: {
             type: String,
             required: true
+        },
+        bizType: {
+            type: String,
+            required: true
         }
     },
     data() {
@@ -35,7 +39,7 @@ export default {
 
             try {
                 this.startCountdown();
-                await sendEmailCode({ email: this.email });
+                await sendEmailCode({ email: this.email, bizType: this.bizType });
                 this.$message.success('验证码已发送到您的邮箱');
             } catch (error) {
                 console.error(error);

@@ -111,7 +111,8 @@
                                 <div class="verification-row">
                                     <el-input v-model="emailForm.code" placeholder="请输入验证码" style="width: 200px;">
                                     </el-input>
-                                    <SendEmailCode :email="emailForm.newEmail" class="send-code-btn" />
+                                    <SendEmailCode :email="emailForm.newEmail" :biz-type="'update-email'"
+                                        class="send-code-btn" />
                                 </div>
                             </el-form-item>
                             <el-form-item>

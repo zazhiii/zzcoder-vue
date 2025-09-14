@@ -87,7 +87,7 @@
 
       <!-- 题目表格 -->
       <el-table :data="problems" style="width: 100%" v-loading="loading" element-loading-text="加载中..." size="small"
-        stripe highlight-current-row @row-click="handleRowClick" class="problem-table">
+        stripe highlight-current-row class="problem-table">
 
         <el-table-column prop="problemNumber" label="题号" width="70" sortable>
           <template slot-scope="scope">
@@ -197,7 +197,7 @@ export default {
         page: 1,
         keyword: '',
         tagId: [],
-        difficulty: '',
+        difficulty: null,
         source: '',
         visible: true,
         total: 0
@@ -324,11 +324,6 @@ export default {
     // 页面跳转
     jump(url) {
       this.$router.push(url);
-    },
-
-    // 表格行点击
-    handleRowClick(row) {
-      this.jump(`/problem/${row.id}`);
     },
 
     // 标签相关方法

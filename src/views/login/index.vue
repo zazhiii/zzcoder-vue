@@ -41,7 +41,7 @@
                                 <div class="email-input-group">
                                     <el-input v-model="codeLoginForm.email" placeholder="邮箱"
                                         prefix-icon="el-icon-message" size="large" clearable class="email-input" />
-                                    <SendEmailCode :email="codeLoginForm.email" />
+                                    <SendEmailCode :email="codeLoginForm.email" :biz-type="'login'" />
                                 </div>
                             </el-form-item>
                             <el-form-item prop="code">
@@ -77,12 +77,12 @@
                                 <div class="email-input-group">
                                     <el-input v-model="registerForm.email" placeholder="邮箱"
                                         prefix-icon="el-icon-message" size="large" clearable class="email-input" />
-                                    <SendEmailCode :email="registerForm.email" />
+                                    <SendEmailCode :email="registerForm.email" :biz-type="'register'" />
                                 </div>
                             </el-form-item>
-                            <el-form-item prop="emailVerificationCode">
-                                <el-input v-model="registerForm.emailVerificationCode" placeholder="验证码"
-                                    prefix-icon="el-icon-key" size="large" clearable />
+                            <el-form-item prop="emailCode">
+                                <el-input v-model="registerForm.emailCode" placeholder="验证码" prefix-icon="el-icon-key"
+                                    size="large" clearable />
                             </el-form-item>
                             <el-form-item>
                                 <el-button type="primary" @click="submitRegister" :loading="loading" size="large"
@@ -117,7 +117,7 @@
                             <div class="email-input-group">
                                 <el-input v-model="resetPasswordForm.email" placeholder="请输入邮箱"
                                     prefix-icon="el-icon-message" clearable class="email-input" />
-                                <SendEmailCode :email="resetPasswordForm.email" />
+                                <SendEmailCode :email="resetPasswordForm.email" :biz-type="'reset-password'" />
                             </div>
                         </el-form-item>
                         <el-form-item prop="code" label="验证码">
@@ -198,7 +198,7 @@ export default {
                 password: '',
                 passwordConfirm: '',
                 email: '',
-                emailVerificationCode: ''
+                emailCode: ''
             },
             registerRules: {
                 username: [
@@ -226,7 +226,7 @@ export default {
                     { required: true, message: '请输入邮箱', trigger: 'change' },
                     { type: 'email', message: '请输入正确的邮箱格式', trigger: 'change' }
                 ],
-                emailVerificationCode: [
+                emailCode: [
                     { required: true, message: '请输入验证码', trigger: 'change' }
                 ]
             },
@@ -323,7 +323,7 @@ export default {
                         const { email, code } = this.codeLoginForm;
                         const body = await loginByEmailcode({
                             email: email,
-                            emailVerificationCode: code
+                            emailCode: code
                         });
 
                         setToken(body.data);
@@ -346,12 +346,12 @@ export default {
                 if (valid) {
                     this.loading = true;
                     try {
-                        const { username, password, email, emailVerificationCode } = this.registerForm;
+                        const { username, password, email, emailCode } = this.registerForm;
                         await register({
                             username,
                             password,
                             email,
-                            emailVerificationCode
+                            emailCode
                         });
 
                         this.$message.success('注册成功！请登录');
@@ -434,7 +434,7 @@ export default {
                         const { email, code, newPassword } = this.resetPasswordForm;
                         await updatePasswordByEmail({
                             email: email,
-                            emailVerificationCode: code,
+                            emailCode: code,
                             newPassword: newPassword
                         });
 
